@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BigbisortBeApplication {
+public class BigbisortApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BigbisortBeApplication.class, args);
+        SpringApplication.run(BigbisortApplication.class, args);
     }
 
 }

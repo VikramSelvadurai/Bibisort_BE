@@ -1,0 +1,31 @@
+bigbisort:
+  server:
+    host: localhost
+    protocol: http
+    port: 8081
+    webapp:
+      host: localhost
+      port: 4081
+  database:
+    host: localhost
+    name: bigbisort
+    url: jdbc:postgresql://localhost:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC
+    userName: postgres
+    password: AdS@3421
+    hikari:
+      connection_timeout: 20000
+      connection_pool_size: 20
+    jpa:
+      database: POSTGRESQL
+      properties:
+        hibernate:
+          enable_lazy_load_no_trans: true
+          provider_disables_autocommit: false
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+      generate-ddl: true
+      show-sql: false
+      hibernate:
+        ddl-auto: validate
+  libreoffice:
+    path: /Applications/libreoffice.app/contents
+    port: 8100
