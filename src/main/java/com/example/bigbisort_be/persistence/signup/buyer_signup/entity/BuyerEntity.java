@@ -1,11 +1,14 @@
-package com.example.bigbisort_be.persistence.signup.seller_signup.entity;
+package com.example.bigbisort_be.persistence.signup.buyer_signup.entity;
 
+import com.example.bigbisort_be.persistence.order.buyer.entity.BuyerOrderEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -14,8 +17,8 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "SELLER",indexes = @Index(columnList = "name"))
-public class SellerSignupEntity {
+@Table(name = "BUYER",indexes = @Index(columnList = "name"))
+public class BuyerEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,6 +27,8 @@ public class SellerSignupEntity {
     private UUID id;
 
     private String name;
+
+    private String userName;
 
     private String email;
 
@@ -39,6 +44,18 @@ public class SellerSignupEntity {
 
     private String country;
 
+    private String password;
+
+    @JsonBackReference
+    @OneToMany(
+            mappedBy = "buyerEntity",
+            orphanRemoval = true,
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY)
+    private Set<BuyerOrderEntity> buyerOrderEntitySet;
+
+
+
     @Override
     public int hashCode() {
         return java.util.Objects.hashCode(id);
@@ -49,7 +66,10 @@ public class SellerSignupEntity {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        SellerSignupEntity sellerSignupEntity = (SellerSignupEntity) o;
-        return sellerSignupEntity.id.equals(this.id);
+        BuyerEntity buyerEntity = (BuyerEntity) o;
+        return buyerEntity.id.equals(this.id);
     }
+
+
+
 }
