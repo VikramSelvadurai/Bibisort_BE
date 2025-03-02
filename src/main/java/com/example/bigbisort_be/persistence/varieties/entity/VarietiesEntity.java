@@ -5,6 +5,7 @@ import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEnti
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "VARIETIES",indexes = @Index(columnList = "id"))
+@FieldNameConstants
 public class VarietiesEntity {
     @Id
     @GeneratedValue(generator = "UUID")

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+
+<body>
+<div style="background-color: #0f84f8; height:50px">
+    <img style="max-height: 50px; object-fit: cover" th:src="${currentLogo}">
+</div>
+
+<div style="margin-top: 20px;">
+    <h4>
+        Hello <b th:text="${currentUser}"></b>,<br>
+        <br>
+        <p th:utext="${message}"></p>
+    </h4>
+</div>
+
+<div class="container" style="margin-top: 20px;" th:if="${bcc}">
+    <h5>This email was BCC to all admins (who opted for email alert)</h5>
+</div>
+
+<div>
+    <div class="container" style="margin-top: 20px;">
+        <h4>Regards,</h4>
+        <h4><p th:utext="${currentAdmin}"></p></h4>
+    </div>
+</div>
+
+<div class="footer">
+    <p align="center"> &copy; 2025 &nbsp;<a href="https://need to have site url here">Bigbisort Export and Import</a>
+    </p>
+</div>
+</body>
+</html>

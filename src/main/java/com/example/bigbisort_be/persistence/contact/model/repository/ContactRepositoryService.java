@@ -1,8 +1,8 @@
 package com.example.bigbisort_be.persistence.contact.model.repository;
 
-import com.example.bigbisort_be.contact.assembler.ContactAssembler;
-import com.example.bigbisort_be.contact.request.ContactRequestBean;
-import com.example.bigbisort_be.contact.response.ContactResponseBean;
+import com.example.bigbisort_be.core.contact.assembler.ContactAssembler;
+import com.example.bigbisort_be.core.contact.request.ContactRequestBean;
+import com.example.bigbisort_be.core.contact.response.ContactResponseBean;
 import com.example.bigbisort_be.persistence.contact.model.entity.ContactEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

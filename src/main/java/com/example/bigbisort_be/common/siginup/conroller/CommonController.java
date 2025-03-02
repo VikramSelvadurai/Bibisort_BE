@@ -1,6 +1,6 @@
 package com.example.bigbisort_be.common.siginup.conroller;
 
-import com.example.bigbisort_be.bean.SignTypeEnum;
+import com.example.bigbisort_be.common.bean.SignTypeEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

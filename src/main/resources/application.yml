@@ -3,17 +3,18 @@ bigbisort:
     host: ${bigbisort.server.protocol}://${bigbisort.server.host}:${bigbisort.server.port},${bigbisort.server.protocol}://${bigbisort.server.webapp.host}:${bigbisort.server.webapp.port},http://localhost:4200,http://localhost:4081
     webapp:
       port: 4200
+    logging:
+      level: INFO
+      path: temp
 spring:
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
   profiles:
-    active: config
+    active: external
+  main:
+    log-startup-info: true
   application:
     name: Bigbisort
-#  security:
-#    user:
-#      password: password
-#      name: username
   jpa:
     properties:
       hibernate:
@@ -25,14 +26,14 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://${bigbisort.database.host}:5432/${bigbisort.database.name}?createDatabaseIfNotExist=true&serverTimezone=UTC;
+    url: jdbc:postgresql://${bigbisort.server.host}:5432/${bigbisort.database.name}?createDatabaseIfNotExist=true&serverTimezone=UTC;
     username: ${bigbisort.database.userName}
     password: ${bigbisort.database.password}
     hikari:
-      connection_timeout: ${bigbisort.database.hikari.connection_timeout}
-      maximum-pool-size: ${bigbisort.database.hikari.connection_pool_size}
+      connection_timeout: 20000
+      maximum-pool-size: 20
 
 server:
-  port: ${bigbisort.server.port}
+  port: 8081
   servlet:
       context-path: /bigbisort-imp-exp

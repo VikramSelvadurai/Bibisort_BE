@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "PRODUCT",indexes = @Index(columnList = "productName"))
+@FieldNameConstants
 public class ProductsEntity {
     @Id
     @GeneratedValue(generator = "UUID")
