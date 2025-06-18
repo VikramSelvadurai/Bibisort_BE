@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -28,9 +29,9 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
     private final BuyerRepository buyerRepository;
     private final BuyerSignupAssembler buyerSignupAssembler;
     @Override
-    public BuyerSignupResponseBean addBuyer(BuyerSignupRequestBean buyerSignupRequestBean)  {
+    public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean)  {
 
-        if((buyerSignupRequestBean.getEmail()!=null && buyerSignupRequestBean.getPhone()!=null) && (!buyerSignupRequestBean.getEmail().isEmpty() && !buyerSignupRequestBean.getPhone().isEmpty())){
+        if(StringUtils.isNotEmpty(buyerSignupRequestBean.getEmail()) && StringUtils.isNotEmpty(buyerSignupRequestBean.getPhone())){
             if(buyerRepositoryService.existsByEmailIgnoreCaseOrPhone(buyerSignupRequestBean.getEmail(),buyerSignupRequestBean.getPhone())){
                 throw new EmailorPhoneAlreadyExistException("Email or Phone number already exist, please choose another one");
             }
@@ -63,10 +64,10 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
 
     @Override
     public String buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
-        if(buyerSigninRequestBean.getUserName()!=null && buyerSigninRequestBean.getPassword()!=null ){
+        if (buyerSigninRequestBean.getUserName() != null && buyerSigninRequestBean.getPassword() != null) {
             String password = Base64.getEncoder()
                     .encodeToString(objectWriter.writeValueAsBytes(buyerSigninRequestBean.getPassword()));
-            if(!buyerRepositoryService.existsByUserNameIgnoreCaseAndPassword(buyerSigninRequestBean.getUserName(),password)){
+            if (!buyerRepositoryService.existsByUserNameIgnoreCaseAndPassword(buyerSigninRequestBean.getUserName(), password)) {
                 throw new InvalidCredentialsException("Invalid Credentials");
             }
         }

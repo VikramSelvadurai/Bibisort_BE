@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface SellerSignupRepository extends JpaRepository<SellerSignupEntity,UUID> {
     boolean existsByEmailIgnoreCaseOrPhone(String email, String phone);
 
+    boolean existsByPhone(String phone);
+
 }

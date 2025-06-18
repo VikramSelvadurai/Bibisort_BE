@@ -25,6 +25,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -56,12 +57,13 @@ public class ProductServiceImpl implements ProductService {
             ProductsEntity productsEntity = ProductsEntity.builder()
                     .productName(productRequestBean.getProductName())
                     .description(productRequestBean.getDescription())
+                    .quantity(productRequestBean.getQuantity())
                     .category(productRequestBean.getCategory())
                     .subcategory(productRequestBean.getSubcategory())
                     .image_url(productRequestBean.getImage_url())
                     .build();
             productsEntity = productsRepositoryService.save(productsEntity);
-            if(!productRequestBean.getVarietiesRequestBeanList().isEmpty()){
+            if(CollectionUtils.isNotEmpty(productRequestBean.getVarietiesRequestBeanList())){
                 Set<VarietiesEntity> varietiesEntitySet =varietiesService.addVarietiesWithProduct(productRequestBean.getVarietiesRequestBeanList(),productsEntity).stream().collect(Collectors.toSet());
                 productsEntity.setVarietiesEntitySet(varietiesEntitySet);
                 productsEntity = productsRepositoryService.save(productsEntity);

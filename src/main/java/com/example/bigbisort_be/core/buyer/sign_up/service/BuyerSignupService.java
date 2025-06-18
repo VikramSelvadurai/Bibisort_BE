@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface BuyerSignupService  {
 
-    BuyerSignupResponseBean addBuyer(BuyerSignupRequestBean buyerSignupRequestBean);
+    BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean);
 
     String buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException;
 

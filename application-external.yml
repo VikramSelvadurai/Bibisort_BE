@@ -7,11 +7,11 @@ bigbisort:
       host: localhost
       port: 4200
   database:
-    host: localhost
+    host: 93.127.166.41
     name: bigbisort
-    url: jdbc:postgresql://localhost:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: jdbc:postgresql://93.127.166.41:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC
     userName: postgres
-    password: AdS@3421
+    password: Bigbisort@123
     hikari:
       connection_timeout: 20000
       connection_pool_size: 20

@@ -1,13 +1,11 @@
 package com.example.bigbisort_be.core.seller.sign_up.controller;
 
+import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignInRequestBean;
 import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestBean;
 import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupResponseBean;
 import com.example.bigbisort_be.core.seller.sign_up.service.SellerSignupService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/seller")
@@ -15,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class SellerSignupController {
     private final SellerSignupService sellerSignupService;
 
-    @GetMapping("/add")
-    public SellerSignupResponseBean addSellerSignup(@RequestBody SellerSignupRequestBean requestBean) {
-        return sellerSignupService.addSellerSignup(requestBean);
+    @PostMapping("/sign-up")
+    public SellerSignupResponseBean sellerSignUp(@RequestBody SellerSignupRequestBean requestBean) {
+        return sellerSignupService.sellerSignUp(requestBean);
     }
 
-    @GetMapping("/sign-in")
-    public SellerSignupResponseBean sellerSignup(@RequestBody SellerSignupRequestBean requestBean) {
-        return sellerSignupService.addSellerSignup(requestBean);
+    @PostMapping("/sign-in")
+    public String sellerSignIn(@RequestBody SellerSignInRequestBean sellerSignInRequestBean) {
+        return sellerSignupService.sellerSignIn(sellerSignInRequestBean);
     }
 
 

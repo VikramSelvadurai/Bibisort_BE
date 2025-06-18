@@ -3,6 +3,7 @@ package com.example.bigbisort_be.core.product.bean.request;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesRequestBean;
 import lombok.*;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Builder
@@ -24,6 +25,8 @@ public class ProductRequestBean {
     private String description;
 
     private String image_url;
+
+    private BigInteger quantity;
 
     private List<VarietiesRequestBean> varietiesRequestBeanList;
 

@@ -16,9 +16,9 @@ public class BuyerSignupController {
 
     private final BuyerSignupService buyerSignupService; ;
 
-    @PostMapping("/add")
-    public BuyerSignupResponseBean addBuyer(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) {
-        return buyerSignupService.addBuyer(buyerSignupRequestBean);
+    @PostMapping("/sign-up")
+    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) {
+        return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
     }
 
     @PostMapping("/sign-in")
@@ -30,6 +30,7 @@ public class BuyerSignupController {
     public boolean existUsername(@RequestParam String username) {
         return buyerSignupService.existUsername(username);
     }
+
     @GetMapping("/email-phone-exist")
     public boolean existUsername(@RequestParam(name = "email",required = false) String username, @RequestParam(name = "phone",required = false) String phone) {
         return buyerSignupService.existEmailorPhone(username,phone);

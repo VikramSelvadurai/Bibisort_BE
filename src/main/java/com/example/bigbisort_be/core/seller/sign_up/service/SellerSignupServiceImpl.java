@@ -1,13 +1,18 @@
 package com.example.bigbisort_be.core.seller.sign_up.service;
 
+import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
+import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignInRequestBean;
 import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
+import com.example.bigbisort_be.exception.InvalidCredentialsException;
 import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerSignupEntity;
 import com.example.bigbisort_be.persistence.signup.seller_signup.model.SellerSignupRepositoryService;
 import com.example.bigbisort_be.core.seller.sign_up.assembler.SellerSignupAssembler;
 import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestBean;
 import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupResponseBean;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +23,8 @@ public class SellerSignupServiceImpl implements SellerSignupService {
 
 
     @Override
-    public SellerSignupResponseBean addSellerSignup(SellerSignupRequestBean requestBean) {
-        if((requestBean.getEmail()!=null && requestBean.getPhone()!=null) && (!requestBean.getEmail().isEmpty() && !requestBean.getPhone().isEmpty())){
+    public SellerSignupResponseBean sellerSignUp(SellerSignupRequestBean requestBean) {
+        if(StringUtils.isNotEmpty(requestBean.getEmail()) && StringUtils.isNotEmpty(requestBean.getPhone())) {
             if(sellerSignupRepositoryService.existsByEmailIgnoreCaseOrPhone(requestBean.getEmail(),requestBean.getPhone())){
                 throw new EmailorPhoneAlreadyExistException("Email or Phone number already exist, please choose another one");
             }
@@ -36,6 +41,17 @@ public class SellerSignupServiceImpl implements SellerSignupService {
             .address(requestBean.getCity())
             .build();
         return sellerSignupAssembler.toModel(sellerSignupRepositoryService.save(sellerSignupEntity));
+    }
+
+    @Override
+    public String sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean) {
+
+        if (StringUtils.isNotEmpty(sellerSignInRequestBean.getMobileNumber())  && StringUtils.isNotEmpty(sellerSignInRequestBean.getOtp() )) {
+            if (!sellerSignupRepositoryService.existsByPhone(sellerSignInRequestBean.getMobileNumber())) {
+                throw new InvalidCredentialsException("Invalid Credentials");
+            }
+        }
+        return "Successfully logged in";
     }
 
 //    public SellerSigninResponsetBean sendOtp(SellerSigninRequestBean request) {

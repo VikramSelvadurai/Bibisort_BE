@@ -1,6 +1,5 @@
 package com.example.bigbisort_be.core.seller.sign_up.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Builder
@@ -9,11 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class SellerSigninRequestBean {
+public class SellerSignInRequestBean {
 
     private String mobileNumber;
     private String countryCode;
     private String otp;
-
 
 }

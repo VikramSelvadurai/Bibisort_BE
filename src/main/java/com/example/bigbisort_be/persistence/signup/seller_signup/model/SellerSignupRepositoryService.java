@@ -12,6 +12,9 @@ public class SellerSignupRepositoryService {
     public boolean existsByEmailIgnoreCaseOrPhone(String email, String phone) {
         return sellerSignupRepository.existsByEmailIgnoreCaseOrPhone(email,phone);
     }
+    public boolean existsByPhone(String phone) {
+        return sellerSignupRepository.existsByPhone(phone);
+    }
 
     public SellerSignupEntity save(SellerSignupEntity sellerSignupEntity) {
         return sellerSignupRepository.save(sellerSignupEntity);
