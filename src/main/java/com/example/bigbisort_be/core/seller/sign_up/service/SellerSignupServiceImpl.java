@@ -1,6 +1,7 @@
 package com.example.bigbisort_be.core.seller.sign_up.service;
 
-import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
+import com.example.bigbisort_be.common.MapBuilder.MapBuilder;
+import com.example.bigbisort_be.common.constants.CommonConstants;
 import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignInRequestBean;
 import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
 import com.example.bigbisort_be.exception.InvalidCredentialsException;
@@ -12,6 +13,10 @@ import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupRespons
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+
+import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.MESSAGE;
 
 
 @Service
@@ -44,14 +49,14 @@ public class SellerSignupServiceImpl implements SellerSignupService {
     }
 
     @Override
-    public String sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean) {
+    public Map<String,String> sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean) {
 
         if (StringUtils.isNotEmpty(sellerSignInRequestBean.getMobileNumber())  && StringUtils.isNotEmpty(sellerSignInRequestBean.getOtp() )) {
             if (!sellerSignupRepositoryService.existsByPhone(sellerSignInRequestBean.getMobileNumber())) {
                 throw new InvalidCredentialsException("Invalid Credentials");
             }
         }
-        return "Successfully logged in";
+        return MapBuilder.of(MESSAGE, CommonConstants.LOGIN_SUCCESSFULLY);
     }
 
 //    public SellerSigninResponsetBean sendOtp(SellerSigninRequestBean request) {

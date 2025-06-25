@@ -1,7 +1,6 @@
 package com.example.bigbisort_be.persistence.varieties.entity;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
-import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -62,7 +61,7 @@ public class VarietiesEntity {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "products_id")
-    private ProductsEntity productsEntity;
+    private ProductEntity productEntity;
 
     @Override
     public int hashCode() {

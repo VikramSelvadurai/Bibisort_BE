@@ -7,6 +7,7 @@ import com.example.bigbisort_be.core.product.bean.request.ProductFilterRequestBe
 import com.example.bigbisort_be.core.product.bean.request.ProductRequestBean;
 import com.example.bigbisort_be.core.product.bean.response.ProductResponseBean;
 import com.example.bigbisort_be.core.product.service.ProductService;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -29,7 +30,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ProductResponseBean getProduct(@RequestParam UUID productId) throws IdNotFoundException {
+    public ProductResponseBean getProduct(@RequestParam UUID productId) throws ProductIdNotFoundException, IdNotFoundException {
         return productService.getProduct(productId);
     }
 

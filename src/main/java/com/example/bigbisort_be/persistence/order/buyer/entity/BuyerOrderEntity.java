@@ -1,6 +1,6 @@
 package com.example.bigbisort_be.persistence.order.buyer.entity;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -55,7 +55,7 @@ public class BuyerOrderEntity {
             name = "ORDERS_PRODUCT_JOIN",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "buyer_order_id"))
-    private Set<ProductsEntity> productsEntitySet = new LinkedHashSet<>();
+    private Set<ProductEntity> productEntitySet = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {

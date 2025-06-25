@@ -34,6 +34,10 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+//    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+//    implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
+//    implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
+
     //email
 //    implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
 //    implementation group: 'javax.mail', name: 'mail', version: '1.4.7'
@@ -72,7 +76,7 @@ dependencies {
 
 
 }
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
+//
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}

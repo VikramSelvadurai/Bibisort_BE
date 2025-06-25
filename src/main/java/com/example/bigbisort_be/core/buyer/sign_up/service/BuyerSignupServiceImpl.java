@@ -1,5 +1,7 @@
 package com.example.bigbisort_be.core.buyer.sign_up.service;
 
+import com.example.bigbisort_be.common.MapBuilder.MapBuilder;
+import com.example.bigbisort_be.common.constants.CommonConstants;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
 import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
 import com.example.bigbisort_be.exception.InvalidCredentialsException;
@@ -16,9 +18,15 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.MESSAGE;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +36,10 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
     private final BuyerRepositoryService buyerRepositoryService;
     private final BuyerRepository buyerRepository;
     private final BuyerSignupAssembler buyerSignupAssembler;
+//    @Autowired
+//    private final AuthenticationManager authenticationManager;
     @Override
-    public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean)  {
+    public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException {
 
         if(StringUtils.isNotEmpty(buyerSignupRequestBean.getEmail()) && StringUtils.isNotEmpty(buyerSignupRequestBean.getPhone())){
             if(buyerRepositoryService.existsByEmailIgnoreCaseOrPhone(buyerSignupRequestBean.getEmail(),buyerSignupRequestBean.getPhone())){
@@ -57,21 +67,34 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
                         .encodeToString(objectWriter.writeValueAsBytes(buyerSignupRequestBean.getPassword())));
             }
         }catch (Exception e){
-            log.error("Exception occured :{}",e);
+            throw new UserNameAlreadyExistException("UserName Already Exist");
         }
         return buyerSignupAssembler.toModel(buyerRepository.save(buyerEntity));
     }
 
     @Override
-    public String buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
-        if (buyerSigninRequestBean.getUserName() != null && buyerSigninRequestBean.getPassword() != null) {
+    public Map<String, String> buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
+
+        Map<String,Object> finalResponse = new HashMap<>();
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(buyerSigninRequestBean.getUserName(),buyerSigninRequestBean.getPassword()));
+////        if(authentication.isAuthenticated()){
+////
+////        }
+        if (StringUtils.isNotEmpty(buyerSigninRequestBean.getUserName() ) && StringUtils.isNotEmpty(buyerSigninRequestBean.getPassword() )) {
             String password = Base64.getEncoder()
                     .encodeToString(objectWriter.writeValueAsBytes(buyerSigninRequestBean.getPassword()));
             if (!buyerRepositoryService.existsByUserNameIgnoreCaseAndPassword(buyerSigninRequestBean.getUserName(), password)) {
                 throw new InvalidCredentialsException("Invalid Credentials");
             }
+//            if(authentication.isAuthenticated()){
+//                return "Successfully logged in";
+//            }else {
+//                return "Login fails";
+//            }
         }
-        return "Successfully logged in";
+//        return "Successfully logged in";
+
+        return MapBuilder.of(MESSAGE, CommonConstants.LOGIN_SUCCESSFULLY);
     }
 
     @Override

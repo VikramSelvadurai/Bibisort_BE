@@ -1,6 +1,6 @@
 package com.example.bigbisort_be.persistence.product.model;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -11,12 +11,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProductsRepository extends JpaRepository<ProductsEntity, UUID>, JpaSpecificationExecutor<ProductsEntity>,
-        PagingAndSortingRepository<ProductsEntity, UUID> {
+public interface ProductsRepository extends JpaRepository<ProductEntity, UUID>, JpaSpecificationExecutor<ProductEntity>,
+        PagingAndSortingRepository<ProductEntity, UUID> {
 
-    Optional<ProductsEntity> findById(UUID productId);
+//    Optional<ProductEntity> findById(UUID productId);
 
-    boolean existsByProductNameIgnoreCase(String prductName);
+    boolean existsByProductNameIgnoreCase(String productName);
 
-    List<ProductsEntity> findAllByIdIsIn(List<UUID> productIds);
+    List<ProductEntity> findAllByIdIsIn(List<UUID> productIds);
 }

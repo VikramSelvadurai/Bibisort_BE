@@ -1,9 +1,8 @@
 package com.example.bigbisort_be.persistence.product.model;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -13,19 +12,20 @@ import java.util.*;
 public class ProductsRepositoryService {
     private final ProductsRepository productsRepository;
 
-    public ProductsEntity save(ProductsEntity productsEntity) {
-        return productsRepository.saveAndFlush(productsEntity);
+    public ProductEntity save(ProductEntity productEntity) {
+        return productsRepository.saveAndFlush(productEntity);
     }
 
-    public Optional<ProductsEntity> findById(UUID productId) {
-        return productsRepository.findById(productId);
+    public ProductEntity findById(UUID productId) throws ProductIdNotFoundException {
+         ProductEntity productEntity = productsRepository.findById(productId).orElseThrow(() -> new ProductIdNotFoundException("Product id not found"));
+    return  productEntity;
     }
 
     public boolean existsByProductNameIgnoreCase(String productName) {
         return productsRepository.existsByProductNameIgnoreCase(productName);
     }
 
-    public Set<ProductsEntity> findAllByIdIsIn(List<UUID> productIds) {
+    public Set<ProductEntity> findAllByIdIsIn(List<UUID> productIds) {
         return new HashSet<>(productsRepository.findAllByIdIsIn(productIds));
     }
 

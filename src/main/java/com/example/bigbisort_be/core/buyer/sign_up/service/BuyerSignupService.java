@@ -3,15 +3,18 @@ package com.example.bigbisort_be.core.buyer.sign_up.service;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
+import com.example.bigbisort_be.exception.UserNameAlreadyExistException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public interface BuyerSignupService  {
 
-    BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean);
+    BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException;
 
-    String buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException;
+    Map<String, String> buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException;
 
     boolean existUsername(String username);
 

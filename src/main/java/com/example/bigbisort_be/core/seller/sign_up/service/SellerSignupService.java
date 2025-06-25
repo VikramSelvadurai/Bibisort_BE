@@ -4,8 +4,10 @@ import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignInRequestB
 import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestBean;
 import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupResponseBean;
 
+import java.util.Map;
+
 public interface SellerSignupService {
     SellerSignupResponseBean sellerSignUp(SellerSignupRequestBean requestBean);
 
-    String sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean);
+    Map<String,String> sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean);
 }

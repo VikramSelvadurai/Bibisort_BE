@@ -1,6 +1,5 @@
 package com.example.bigbisort_be.persistence.varieties.model;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

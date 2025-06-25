@@ -5,7 +5,8 @@ import com.example.bigbisort_be.core.product.bean.request.ProductRequestBean;
 import com.example.bigbisort_be.core.product.utils.CriteriaUtils;
 import com.example.bigbisort_be.exception.IdNotFoundException;
 import com.example.bigbisort_be.exception.ProductAlreadyExistException;
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.product.model.ProductsRepository;
 import com.example.bigbisort_be.persistence.product.model.ProductsRepositoryService;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
@@ -44,17 +45,17 @@ public class ProductServiceImpl implements ProductService {
     private final ProductsRepositoryService productsRepositoryService;
     private final ProductsRepository productsRepository;
     private final ProductAssembler productAssembler;
-    private final PagedResourcesAssembler<ProductsEntity> pagedResourcesAssembler;
+    private final PagedResourcesAssembler<ProductEntity> pagedResourcesAssembler;
 
 
     @Override
     public CollectionModel<ProductResponseBean> addProduct(List<ProductRequestBean> productRequestBeanList) throws ProductAlreadyExistException {
-        List<ProductsEntity> productsEntities = new ArrayList<>();
+        List<ProductEntity> productsEntities = new ArrayList<>();
         for (ProductRequestBean productRequestBean : productRequestBeanList) {
             if(productsRepositoryService.existsByProductNameIgnoreCase(productRequestBean.getProductName())){
                 throw new ProductAlreadyExistException("Product '"+productRequestBean.getProductName()+"' already Exist");
             }
-            ProductsEntity productsEntity = ProductsEntity.builder()
+            ProductEntity productEntity = ProductEntity.builder()
                     .productName(productRequestBean.getProductName())
                     .description(productRequestBean.getDescription())
                     .quantity(productRequestBean.getQuantity())
@@ -62,26 +63,22 @@ public class ProductServiceImpl implements ProductService {
                     .subcategory(productRequestBean.getSubcategory())
                     .image_url(productRequestBean.getImage_url())
                     .build();
-            productsEntity = productsRepositoryService.save(productsEntity);
+            productEntity = productsRepositoryService.save(productEntity);
             if(CollectionUtils.isNotEmpty(productRequestBean.getVarietiesRequestBeanList())){
-                Set<VarietiesEntity> varietiesEntitySet =varietiesService.addVarietiesWithProduct(productRequestBean.getVarietiesRequestBeanList(),productsEntity).stream().collect(Collectors.toSet());
-                productsEntity.setVarietiesEntitySet(varietiesEntitySet);
-                productsEntity = productsRepositoryService.save(productsEntity);
+                Set<VarietiesEntity> varietiesEntitySet =varietiesService.addVarietiesWithProduct(productRequestBean.getVarietiesRequestBeanList(), productEntity).stream().collect(Collectors.toSet());
+                productEntity.setVarietiesEntitySet(varietiesEntitySet);
+                productEntity = productsRepositoryService.save(productEntity);
             }
-            productsEntities.add(productsEntity);
+            productsEntities.add(productEntity);
         }
         return productAssembler.toCollectionModel(productsEntities);
     }
 
     @Override
-    public ProductResponseBean getProduct(UUID productId) throws IdNotFoundException {
+    public ProductResponseBean getProduct(UUID productId) throws ProductIdNotFoundException {
         ProductResponseBean productResponseBean = null;
-        Optional<ProductsEntity> productsEntityOptional = productsRepositoryService.findById(productId);
-        if(productsEntityOptional.isPresent()){
-            productResponseBean = productAssembler.toModel(productsEntityOptional.get());
-        }else {
-            throw new IdNotFoundException("Product '"+productId+"' not fount");
-        }
+        ProductEntity productsEntityOptional = productsRepositoryService.findById(productId);
+            productResponseBean = productAssembler.toModel(productsEntityOptional);
         return productResponseBean;
     }
 
@@ -93,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
                         pageable.getPageNumber(),
                         pageable.getPageSize(),
                         Sort.by(Sort.Direction.DESC, PRODUCT_NAME));
-        Page<ProductsEntity> productsEntityPage =
+        Page<ProductEntity> productsEntityPage =
                 productsRepository.findAll(
                         (root, query, criteriaBuilder) -> {
                             List<Predicate> predicates = new ArrayList<>();
@@ -108,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
 
     private void productNameCriteria(
             String searchText,
-            Root<ProductsEntity> root,
+            Root<ProductEntity> root,
             CriteriaBuilder criteriaBuilder,
             List<Predicate> predicates) {
         if (!Objects.toString(searchText, "").equals("")) {
@@ -121,7 +118,7 @@ public class ProductServiceImpl implements ProductService {
     }
     private void productCategoryCriteria(
             String searchText,
-            Root<ProductsEntity> root,
+            Root<ProductEntity> root,
             CriteriaBuilder criteriaBuilder,
             List<Predicate> predicates) {
         if (!Objects.toString(searchText, "").equals("")) {

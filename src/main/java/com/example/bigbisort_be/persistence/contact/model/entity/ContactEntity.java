@@ -28,7 +28,7 @@ public class ContactEntity extends AuditEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "email",unique = true,nullable = false)
+    @Column(name = "email",nullable = false)
     private String email;
 
     @Column(name = "city",nullable = false)

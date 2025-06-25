@@ -40,7 +40,7 @@ public class ContactServiceImpl {
     private final static String EMAIL_HOST = "smtp.gmail.com";
     private final static String EMAIL_PORT = "465";
     private final static String HOST_MAIL = "bigbisort@gmail.com";
-    private final static String HOST_EMAIL_PASSWORD = "qrjxpldyihitblch";
+    private final static String HOST_EMAIL_PASSWORD = "xrei sqsc ukro bsry"; //Bigbisort@123g
 
     private final ContactRepositoryService contactRepositoryService;
     private final ContactUtils contactUtils;

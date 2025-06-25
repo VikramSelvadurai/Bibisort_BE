@@ -1,7 +1,7 @@
 package com.example.bigbisort_be.core.varieties.service;
 
 import com.example.bigbisort_be.core.varieties.assembler.VarietiesAssembler;
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import com.example.bigbisort_be.persistence.varieties.model.VarietiesRepository;
 import com.example.bigbisort_be.persistence.varieties.model.VarietiesRepositoryService;
@@ -58,7 +58,7 @@ public class VarietiesServiceImpl implements VarietiesService {
 
     @Override
     @Transactional
-    public List<VarietiesEntity> addVarietiesWithProduct(List<VarietiesRequestBean> varietiesRequestBeanList, ProductsEntity productsEntity) {
+    public List<VarietiesEntity> addVarietiesWithProduct(List<VarietiesRequestBean> varietiesRequestBeanList, ProductEntity productEntity) {
 
         List<VarietiesEntity> varietiesEntityList = new ArrayList<>();
         for (VarietiesRequestBean varietiesRequestBean : varietiesRequestBeanList) {
@@ -73,7 +73,7 @@ public class VarietiesServiceImpl implements VarietiesService {
                     .certifications(varietiesRequestBean.getCertifications())
                     .grower(varietiesRequestBean.getGrower())
                     .growingMethod(varietiesRequestBean.getGrowingMethod())
-                    .productsEntity(productsEntity)
+                    .productEntity(productEntity)
                     .build());
         }
        return varietiesRepositoryService.saveAllWithProduct(varietiesEntityList);
@@ -115,7 +115,7 @@ public class VarietiesServiceImpl implements VarietiesService {
                             List<Predicate> predicates = new ArrayList<>();
                             varietiesNameCriteria(varietiesFilterRequestBean.getVarietyName(), root, criteriaBuilder, predicates);
                             predicates.add(
-                                    criteriaBuilder.in(root.get(VarietiesEntity.Fields.productsEntity).get(ProductsEntity.Fields.id))
+                                    criteriaBuilder.in(root.get(VarietiesEntity.Fields.productEntity).get(ProductEntity.Fields.id))
                                             .value(varietiesFilterRequestBean.getProductId()));
                             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
                         },

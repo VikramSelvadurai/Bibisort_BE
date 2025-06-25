@@ -1,18 +1,22 @@
 package com.example.bigbisort_be.persistence.audit.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,9 +33,24 @@ public abstract class AuditEntity implements Serializable {
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
     private Date updatedAt;
+
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean active;
+
+    @CreatedBy
+    private String createdBy = "SYSTEM";
+    @LastModifiedBy
+    private String modifiedBy = "SYSTEM";
+
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID createdId;
+
+    @JdbcTypeCode(SqlTypes.UUID)
+    private UUID modifiedId;
 
 
 //    @PrePersist

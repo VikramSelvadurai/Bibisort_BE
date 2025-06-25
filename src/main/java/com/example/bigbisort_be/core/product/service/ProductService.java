@@ -5,6 +5,7 @@ import com.example.bigbisort_be.core.product.bean.response.ProductResponseBean;
 import com.example.bigbisort_be.exception.IdNotFoundException;
 import com.example.bigbisort_be.exception.ProductAlreadyExistException;
 import com.example.bigbisort_be.core.product.bean.request.ProductFilterRequestBean;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public interface ProductService {
     CollectionModel<ProductResponseBean> addProduct(List<ProductRequestBean> productRequestBean) throws ProductAlreadyExistException;
 
-    ProductResponseBean getProduct(UUID productId) throws IdNotFoundException;
+    ProductResponseBean getProduct(UUID productId) throws IdNotFoundException, ProductIdNotFoundException;
 
     PagedModel<ProductResponseBean> getProductFilter(ProductFilterRequestBean productFilterRequestBean, Pageable pageable);
 }

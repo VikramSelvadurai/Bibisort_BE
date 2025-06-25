@@ -6,7 +6,7 @@ import com.example.bigbisort_be.core.order.buyer.bean.response.BuyerOrderRespons
 import com.example.bigbisort_be.exception.IdNotFoundException;
 import com.example.bigbisort_be.persistence.order.buyer.entity.BuyerOrderEntity;
 import com.example.bigbisort_be.persistence.order.buyer.model.BuyerOrderRepositoryService;
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.product.model.ProductsRepositoryService;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.model.BuyerRepositoryService;
@@ -30,7 +30,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService{
     public BuyerOrderResponseBean saveOrder(BuyerOrderRequestBean buyerOrderRequestBean) throws IdNotFoundException {
 
         BuyerEntity buyerEntity = buyerRepositoryService.findById(UUID.fromString(buyerOrderRequestBean.getBuyerId()));
-        Set<ProductsEntity> productsEntitySet = productsRepositoryService.findAllByIdIsIn(buyerOrderRequestBean.getProductIds());
+        Set<ProductEntity> productEntitySet = productsRepositoryService.findAllByIdIsIn(buyerOrderRequestBean.getProductIds());
         BuyerOrderEntity buyerOrderEntity = BuyerOrderEntity.builder()
                 .orderDate(buyerOrderRequestBean.getOrderDate())
                 .billingCompanyName(buyerOrderRequestBean.getBillingCompanyName())
@@ -40,7 +40,7 @@ public class BuyerOrderServiceImpl implements BuyerOrderService{
                 .estimationDateOfArrival(buyerOrderRequestBean.getEstimationDateOfArrival())
                 .buyerEntity(buyerEntity)
                 .build();
-        buyerOrderEntity.setProductsEntitySet(productsEntitySet);
+        buyerOrderEntity.setProductEntitySet(productEntitySet);
 
         buyerOrderEntity = buyerOrderRepositoryService.save(buyerOrderEntity);
 

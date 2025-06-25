@@ -26,12 +26,13 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://${bigbisort.server.host}:5432/${bigbisort.database.name}?createDatabaseIfNotExist=true&serverTimezone=UTC;
-    username: ${bigbisort.database.userName}
-    password: ${bigbisort.database.password}
+    url: jdbc:postgresql://localhost:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC;
+    username: postgres
+    password: AdS@3421
     hikari:
       connection_timeout: 20000
       maximum-pool-size: 20
+
 
 server:
   port: 8081

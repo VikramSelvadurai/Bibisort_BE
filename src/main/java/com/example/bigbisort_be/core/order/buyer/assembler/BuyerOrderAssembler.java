@@ -3,7 +3,7 @@ package com.example.bigbisort_be.core.order.buyer.assembler;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerInfoBean;
 import com.example.bigbisort_be.core.order.buyer.bean.response.BuyerOrderResponseBean;
 import com.example.bigbisort_be.persistence.order.buyer.entity.BuyerOrderEntity;
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.example.bigbisort_be.core.product.assembler.ProductAssembler;
 import com.example.bigbisort_be.core.product.bean.response.ProductResponseBean;
@@ -33,8 +33,8 @@ public class BuyerOrderAssembler implements RepresentationModelAssembler<BuyerOr
     public BuyerOrderResponseBean buildModel(BuyerOrderEntity buyerOrderEntity) {
         BuyerEntity buyerEntity  = buyerOrderEntity.getBuyerEntity();
         Set<ProductResponseBean> productResponseBeanSet = new HashSet<>();
-        for (ProductsEntity productsEntity : buyerOrderEntity.getProductsEntitySet()) {
-            productResponseBeanSet.add(productAssembler.buildModel(productsEntity));
+        for (ProductEntity productEntity : buyerOrderEntity.getProductEntitySet()) {
+            productResponseBeanSet.add(productAssembler.buildModel(productEntity));
         }
         return BuyerOrderResponseBean.builder()
                 .orderId(buyerOrderEntity.getId())

@@ -1,6 +1,6 @@
 package com.example.bigbisort_be.core.varieties.service;
 
-import com.example.bigbisort_be.persistence.product.entity.ProductsEntity;
+import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesFilterRequestBean;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesRequestBean;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public interface VarietiesService {
     CollectionModel<VarietiesResponseBean> addVarieties(List<VarietiesRequestBean> varietiesRequestBean);
 
-    List<VarietiesEntity> addVarietiesWithProduct(List<VarietiesRequestBean> varietiesRequestBean, ProductsEntity productsEntity);
+    List<VarietiesEntity> addVarietiesWithProduct(List<VarietiesRequestBean> varietiesRequestBean, ProductEntity productEntity);
 
     VarietiesResponseBean getVarieties(UUID varietiesId);
 

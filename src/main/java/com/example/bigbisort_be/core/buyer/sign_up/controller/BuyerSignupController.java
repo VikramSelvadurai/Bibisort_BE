@@ -4,10 +4,13 @@ import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBea
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
 import com.example.bigbisort_be.core.buyer.sign_up.service.BuyerSignupService;
+import com.example.bigbisort_be.exception.UserNameAlreadyExistException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/buyer")
@@ -17,12 +20,12 @@ public class BuyerSignupController {
     private final BuyerSignupService buyerSignupService; ;
 
     @PostMapping("/sign-up")
-    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) {
+    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException {
         return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
     }
 
     @PostMapping("/sign-in")
-    public String buyerLogin(@RequestBody @Valid BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
+    public Map<String, String> buyerLogin(@RequestBody @Valid BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
         return buyerSignupService.buyerLogin(buyerSigninRequestBean);
     }
 
