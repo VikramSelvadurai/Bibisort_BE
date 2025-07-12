@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class CommonConstants {
 
     public final static String LOGIN_SUCCESSFULLY = "Successfully Logged in ";
+    public final static String STATUS_UPDATED = "Status updated successfully";
     public final static String WATCH_LIST_ADDED = "Watch list added Successfully";
 
 }

@@ -28,11 +28,12 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC;
     username: postgres
-    password: AdS@3421
+    password: postgres  #Bigbisort@123
+    #username: postgres
+    #password: AdS@3421  #Bigbisort@123
     hikari:
       connection_timeout: 20000
       maximum-pool-size: 20
-
 
 server:
   port: 8081

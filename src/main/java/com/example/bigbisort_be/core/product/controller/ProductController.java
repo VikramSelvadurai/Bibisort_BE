@@ -30,7 +30,7 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ProductResponseBean getProduct(@RequestParam UUID productId) throws ProductIdNotFoundException, IdNotFoundException {
+    public ProductResponseBean getProduct(@PathVariable UUID productId) throws ProductIdNotFoundException, IdNotFoundException {
         return productService.getProduct(productId);
     }
 

@@ -1,6 +1,7 @@
 package com.example.bigbisort_be.core.order.buyer.bean.response;
 
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerInfoBean;
+import com.example.bigbisort_be.core.order.buyer.enums.BuyerOrderStatusEnum;
 import com.example.bigbisort_be.core.product.bean.response.ProductResponseBean;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
@@ -26,4 +27,5 @@ public class BuyerOrderResponseBean extends RepresentationModel<BuyerOrderRespon
     private BuyerInfoBean buyerInfoBean;
     private Set<String> productNames;
     private Set<ProductResponseBean> productResponseBeanSet;
+    private BuyerOrderStatusEnum orderStatus;
 }

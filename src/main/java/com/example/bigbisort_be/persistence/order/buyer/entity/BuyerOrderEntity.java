@@ -1,10 +1,12 @@
 package com.example.bigbisort_be.persistence.order.buyer.entity;
 
+import com.example.bigbisort_be.core.order.buyer.enums.BuyerOrderStatusEnum;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "BUYER_ORDER",indexes = @Index(columnList = "id"))
+@FieldNameConstants
 public class BuyerOrderEntity {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -40,6 +43,9 @@ public class BuyerOrderEntity {
     private String quantity;
 
     private String shippingName;
+
+    @Enumerated(EnumType.STRING)
+    private BuyerOrderStatusEnum status;
 
     @Temporal(TemporalType.TIMESTAMP)
     private String estimationDateOfArrival;

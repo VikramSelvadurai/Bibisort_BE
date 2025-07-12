@@ -46,6 +46,7 @@ public class BuyerOrderAssembler implements RepresentationModelAssembler<BuyerOr
                 .quantity(buyerOrderEntity.getQuantity())
                 .buyerInfoBean(BuyerInfoBean.builder().name(buyerEntity.getName()).email(buyerEntity.getEmail()).phone(buyerEntity.getPhone()).build())
                 .productResponseBeanSet(productResponseBeanSet)
+                .orderStatus(buyerOrderEntity.getStatus())
                 .build();
     }
 }
