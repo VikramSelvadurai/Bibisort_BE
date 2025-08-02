@@ -1,6 +1,7 @@
 package com.example.bigbisort_be.persistence.signup.buyer_signup.model;
 
 import com.example.bigbisort_be.exception.IdNotFoundException;
+import com.example.bigbisort_be.exception.ResourceNotAvailableException;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,5 +26,8 @@ public class BuyerRepositoryService {
 
     public BuyerEntity findById(UUID buyerId) throws IdNotFoundException {
         return repository.findById(buyerId).orElseThrow(() -> new IdNotFoundException("Buyer '"+buyerId + "' Not found"));
+    }
+    public BuyerEntity findByUsernameIgnoreCase(String buyerName) throws ResourceNotAvailableException {
+        return repository.findByUserNameIgnoreCase(buyerName).orElseThrow(() -> new ResourceNotAvailableException("Buyer '"+buyerName + "' Not found"));
     }
 }

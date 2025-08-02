@@ -39,4 +39,9 @@ public class ProductController {
         return productService.getProductFilter(productFilterRequestBean,pageable);
     }
 
+    @GetMapping("/product_info")
+    public String getProductInfo(){
+        return "Product added Successfully ";
+    }
+
 }

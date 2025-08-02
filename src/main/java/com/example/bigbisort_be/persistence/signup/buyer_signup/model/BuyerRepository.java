@@ -18,4 +18,5 @@ public interface BuyerRepository extends JpaRepository<BuyerEntity,UUID> {
 
     Optional<BuyerEntity> findById(UUID buyerId);
 
+    Optional<BuyerEntity> findByUserNameIgnoreCase(String buyerName);
 }

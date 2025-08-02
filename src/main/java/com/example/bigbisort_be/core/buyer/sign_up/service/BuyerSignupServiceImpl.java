@@ -3,9 +3,8 @@ package com.example.bigbisort_be.core.buyer.sign_up.service;
 import com.example.bigbisort_be.common.MapBuilder.MapBuilder;
 import com.example.bigbisort_be.common.constants.CommonConstants;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
-import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
-import com.example.bigbisort_be.exception.InvalidCredentialsException;
-import com.example.bigbisort_be.exception.UserNameAlreadyExistException;
+import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerInfoBean;
+import com.example.bigbisort_be.exception.*;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.model.BuyerRepository;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.model.BuyerRepositoryService;
@@ -73,20 +72,23 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
     }
 
     @Override
-    public Map<String, String> buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException {
+    public BuyerInfoBean buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException, ResourceNotAvailableException {
 
         Map<String,Object> finalResponse = new HashMap<>();
 //        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(buyerSigninRequestBean.getUserName(),buyerSigninRequestBean.getPassword()));
 ////        if(authentication.isAuthenticated()){
 ////
 ////        }
+        BuyerInfoBean buyerInfoBean = new BuyerInfoBean();
         if (StringUtils.isNotEmpty(buyerSigninRequestBean.getUserName() ) && StringUtils.isNotEmpty(buyerSigninRequestBean.getPassword() )) {
             String password = Base64.getEncoder()
                     .encodeToString(objectWriter.writeValueAsBytes(buyerSigninRequestBean.getPassword()));
             if (!buyerRepositoryService.existsByUserNameIgnoreCaseAndPassword(buyerSigninRequestBean.getUserName(), password)) {
                 throw new InvalidCredentialsException("Invalid Credentials");
             }
-//            if(authentication.isAuthenticated()){
+            BuyerEntity buyerEntity = buyerRepositoryService.findByUsernameIgnoreCase(buyerSigninRequestBean.getUserName());
+            buyerInfoBean = BuyerInfoBean.builder().buyerId(buyerEntity.getId()).name(buyerEntity.getName()).phone(buyerEntity.getPhone()).email(buyerEntity.getEmail()).message(CommonConstants.LOGIN_SUCCESSFULLY).userName(buyerEntity.getUserName()).build();
+            //            if(authentication.isAuthenticated()){
 //                return "Successfully logged in";
 //            }else {
 //                return "Login fails";
@@ -94,7 +96,8 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
         }
 //        return "Successfully logged in";
 
-        return MapBuilder.of(MESSAGE, CommonConstants.LOGIN_SUCCESSFULLY);
+
+        return buyerInfoBean;
     }
 
     @Override
