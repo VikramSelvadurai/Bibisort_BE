@@ -13,6 +13,8 @@ import java.util.Date;
 @Data
 public class VarietiesRequestBean {
 
+    private String productId;
+
     private String varietyName;
 
     private String description;

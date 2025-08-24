@@ -28,6 +28,7 @@ public class VarietiesEntity {
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
 
+    @Column(name = "variety_name")
     private String varietyName;
 
     private String description;

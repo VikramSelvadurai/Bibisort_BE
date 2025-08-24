@@ -52,7 +52,7 @@ public class ProductEntity {
             orphanRemoval = true,
             cascade = CascadeType.MERGE,
             fetch = FetchType.LAZY)
-    private Set<VarietiesEntity> varietiesEntitySet;
+    private Set<VarietiesEntity> varietiesEntitySet=new LinkedHashSet<>();;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "productEntitySet")

@@ -1,7 +1,9 @@
 package com.example.bigbisort_be.core.varieties.service;
 
 import com.example.bigbisort_be.core.varieties.assembler.VarietiesAssembler;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
+import com.example.bigbisort_be.persistence.product.model.ProductsRepositoryService;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import com.example.bigbisort_be.persistence.varieties.model.VarietiesRepository;
 import com.example.bigbisort_be.persistence.varieties.model.VarietiesRepositoryService;
@@ -29,18 +31,21 @@ import java.util.*;
 @RequiredArgsConstructor
 public class VarietiesServiceImpl implements VarietiesService {
 
-    private static final String VARIETIES_NAME = "varietyName";
+    private static final String VARIETIES_NAME = "variety_name";
     private final VarietiesRepositoryService varietiesRepositoryService;
     private final VarietiesRepository varietiesRepository;
+    private final ProductsRepositoryService productsRepositoryService;
     private final VarietiesAssembler varietiesAssembler;
     private final PagedResourcesAssembler<VarietiesEntity> pagedResourcesAssembler;
 
     @Override
-    public CollectionModel<VarietiesResponseBean> addVarieties(List<VarietiesRequestBean> varietiesRequestBeanList) {
+    public CollectionModel<VarietiesResponseBean> addVarieties(List<VarietiesRequestBean> varietiesRequestBeanList) throws ProductIdNotFoundException {
 
         List<VarietiesEntity> varietiesEntityList = new ArrayList<>();
         for (VarietiesRequestBean varietiesRequestBean : varietiesRequestBeanList) {
+            ProductEntity productEntity = productsRepositoryService.findById(UUID.fromString(varietiesRequestBean.getProductId()));
             varietiesEntityList.add(VarietiesEntity.builder()
+                    .productEntity(productEntity)
                     .varietyName(varietiesRequestBean.getVarietyName())
                     .description(varietiesRequestBean.getDescription())
                     .origin(varietiesRequestBean.getOrigin())

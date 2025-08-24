@@ -5,6 +5,7 @@ import com.example.bigbisort_be.core.varieties.bean.response.VarietiesResponseBe
 import com.example.bigbisort_be.core.varieties.service.VarietiesService;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesFilterRequestBean;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesRequestBean;
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
@@ -22,7 +23,7 @@ public class VarietiesController {
     private final VarietiesService varietiesService;
 
     @PostMapping("/add")
-    public CollectionModel<VarietiesResponseBean> addVarieties(@RequestBody List<VarietiesRequestBean> varietiesRequestBean){
+    public CollectionModel<VarietiesResponseBean> addVarieties(@RequestBody List<VarietiesRequestBean> varietiesRequestBean) throws ProductIdNotFoundException {
         return varietiesService.addVarieties(varietiesRequestBean);
     }
 

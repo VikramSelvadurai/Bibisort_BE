@@ -20,11 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
 //    @Bean
 //    public AuthenticationProvider  authenticationProvider(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -40,23 +35,12 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/product/product_info").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
                 )
-                // Use default HTTP Basic authentication for other secured APIs
                 .httpBasic(Customizer.withDefaults())
-                // Stateless session (good for REST APIs)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
-//        return httpSecurity
-//                .csrf(csrf -> csrf.disable()) // disable CSRF for REST APIs
-//                .authorizeHttpRequests(request -> request
-//                        .requestMatchers("/bigbisort-imp-exp/product/product_info").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .build();
     }
 //    public SecurityFilterChain securityFilterAutoConfiguration(HttpSecurity httpSecurity) throws Exception {
 //

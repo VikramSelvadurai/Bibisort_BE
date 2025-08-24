@@ -14,10 +14,9 @@ import com.example.bigbisort_be.core.product.bean.request.ProductFilterRequestBe
 import com.example.bigbisort_be.core.product.bean.response.ProductResponseBean;
 import com.example.bigbisort_be.core.varieties.assembler.VarietiesAssembler;
 import com.example.bigbisort_be.core.varieties.service.VarietiesService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,13 +29,15 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     public static final String PRODUCT_NAME = "productName";
     public static final String PRODUCT_CATEGORY = "category";
+    public static final String VARIETIES_ENTITY = "varietiesEntitySet";
+    private static final String LIKE_OPERATOR = "%";
     private final VarietiesAssembler varietiesAssembler;
 
     private final static String PRODUCT_ALREADY_EXIST ="Product already Exist ";
@@ -96,12 +97,41 @@ public class ProductServiceImpl implements ProductService {
                             List<Predicate> predicates = new ArrayList<>();
                             productNameCriteria(productFilterRequestBean.getProductName(), root, criteriaBuilder, predicates);
                             productCategoryCriteria(productFilterRequestBean.getCategory(), root, criteriaBuilder, predicates);
+                            varietiesCriteria(productFilterRequestBean.getVarieties(), root, criteriaBuilder, predicates);
                             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
                         },
                         pageRequest);
 
         return pagedResourcesAssembler.toModel(productsEntityPage,productAssembler);
         }
+
+    private void varietiesCriteria(String varieties, Root<ProductEntity> root, CriteriaBuilder criteriaBuilder, List<Predicate> predicates) {
+        if (!Objects.toString(varieties, "").equals("")) {
+//            Join<ProductEntity, VarietiesEntity> varietyJoin = root.join("varietiesEntitySet", JoinType.LEFT);
+//
+//            log.error("Variety name :{}", criteriaBuilder.lower(varietyJoin.get("variety_name")));
+//            predicates.add(
+//                    criteriaBuilder.and(
+//                            criteriaBuilder.like(
+//                                    criteriaBuilder.lower(varietyJoin.get("variety_name")),
+//                                    "%" + CriteriaUtils.escapeForLike(varieties).toLowerCase(Locale.ROOT) + "%")));
+//        }
+            final CriteriaQuery<ProductEntity> cq =
+                    criteriaBuilder.createQuery(ProductEntity.class);
+            final Subquery<UUID> subquery = cq.subquery(UUID.class);
+            final Root<ProductEntity> productEntityRoot = subquery.from(ProductEntity.class);
+            final Join<ProductEntity,VarietiesEntity> productEntityJoin =
+                    productEntityRoot.join("varietiesEntitySet",JoinType.INNER);
+            subquery
+                    .select(productEntityRoot.get("id"))
+                    .where(
+                            criteriaBuilder.like(
+                                    criteriaBuilder.lower(productEntityJoin.get("varietyName")),
+                                    LIKE_OPERATOR + CriteriaUtils.formatSearchText(varieties).toLowerCase(Locale.ROOT) + LIKE_OPERATOR));
+            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
+        }
+
+    }
 
     private void productNameCriteria(
             String searchText,

@@ -1,5 +1,6 @@
 package com.example.bigbisort_be.core.varieties.service;
 
+import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import com.example.bigbisort_be.core.varieties.bean.request.VarietiesFilterRequestBean;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 @Component
 public interface VarietiesService {
-    CollectionModel<VarietiesResponseBean> addVarieties(List<VarietiesRequestBean> varietiesRequestBean);
+    CollectionModel<VarietiesResponseBean> addVarieties(List<VarietiesRequestBean> varietiesRequestBean) throws ProductIdNotFoundException;
 
     List<VarietiesEntity> addVarietiesWithProduct(List<VarietiesRequestBean> varietiesRequestBean, ProductEntity productEntity);
 
