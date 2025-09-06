@@ -15,7 +15,7 @@ import java.util.Map;
 @Component
 public interface BuyerSignupService  {
 
-    BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException;
+    BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws Exception;
 
     BuyerInfoBean buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException, ResourceNotAvailableException;
 

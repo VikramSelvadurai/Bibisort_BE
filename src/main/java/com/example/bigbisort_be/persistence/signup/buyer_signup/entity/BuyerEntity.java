@@ -1,6 +1,7 @@
 package com.example.bigbisort_be.persistence.signup.buyer_signup.entity;
 
 import com.example.bigbisort_be.persistence.order.buyer.entity.BuyerOrderEntity;
+import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,6 +48,10 @@ public class BuyerEntity {
     private String country;
 
     private String password;
+
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JoinColumn(name = "buyerEntity_id", referencedColumnName = "id")
+    private UsersEntity usersEntity;
 
     @JsonBackReference
     @OneToMany(

@@ -2,6 +2,7 @@ package com.example.bigbisort_be.core.buyer.sign_up.service;
 
 import com.example.bigbisort_be.common.MapBuilder.MapBuilder;
 import com.example.bigbisort_be.common.constants.CommonConstants;
+import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerInfoBean;
 import com.example.bigbisort_be.exception.*;
@@ -11,6 +12,9 @@ import com.example.bigbisort_be.persistence.signup.buyer_signup.model.BuyerRepos
 import com.example.bigbisort_be.core.buyer.sign_up.assembler.BuyerSignupAssembler;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
+import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
+import com.example.bigbisort_be.persistence.signup.user.model.UserRepositoryServiceImpl;
+import com.example.bigbisort_be.security.core.utils.EncryptionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -31,20 +35,46 @@ import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.M
 @RequiredArgsConstructor
 @Slf4j
 public class BuyerSignupServiceImpl implements BuyerSignupService {
+    private final UserRepositoryServiceImpl userRepositoryServiceImpl;
     ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
     private final BuyerRepositoryService buyerRepositoryService;
     private final BuyerRepository buyerRepository;
     private final BuyerSignupAssembler buyerSignupAssembler;
+    private final EncryptionUtils encryptionUtils ;
 //    @Autowired
 //    private final AuthenticationManager authenticationManager;
     @Override
-    public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException {
+    public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
 
         if(StringUtils.isNotEmpty(buyerSignupRequestBean.getEmail()) && StringUtils.isNotEmpty(buyerSignupRequestBean.getPhone())){
             if(buyerRepositoryService.existsByEmailIgnoreCaseOrPhone(buyerSignupRequestBean.getEmail(),buyerSignupRequestBean.getPhone())){
                 throw new EmailorPhoneAlreadyExistException("Email or Phone number already exist, please choose another one");
             }
         }
+
+        try{
+            if(buyerSignupRequestBean.getUserName()!=null  && buyerSignupRequestBean.getPassword()!=null){
+                if(buyerRepositoryService.existsByUsername(buyerSignupRequestBean.getUserName())){
+                    throw new UserNameAlreadyExistException("UserName Already Exist");
+                }
+//                buyerEntity.setUserName(buyerSignupRequestBean.getUserName());
+//
+//                buyerEntity.setPassword(Base64.getEncoder()
+//                        .encodeToString(objectWriter.writeValueAsBytes(buyerSignupRequestBean.getPassword())));
+            }
+        }catch (Exception e){
+            throw new UserNameAlreadyExistException("UserName Already Exist");
+        }
+        UsersEntity usersEntity = UsersEntity.builder()
+                .authenticationType(AuthenticationType.BUYER)
+                .email(buyerSignupRequestBean.getEmail())
+                .name(buyerSignupRequestBean.getName())
+                .userName(buyerSignupRequestBean.getUserName())
+                .sPhrase(encryptionUtils.encrypt(buyerSignupRequestBean.getPassword()))
+                .build();
+
+        UsersEntity usersEntitySaved = userRepositoryServiceImpl.save(usersEntity);
+
         BuyerEntity buyerEntity = BuyerEntity.builder()
                         .name(buyerSignupRequestBean.getName())
                                 .email(buyerSignupRequestBean.getEmail())
@@ -53,21 +83,10 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
                                                                 .state(buyerSignupRequestBean.getState())
                                                                         .zip(buyerSignupRequestBean.getZip())
                                                                                 .city(buyerSignupRequestBean.getCity())
+                .usersEntity(usersEntitySaved)
                 .country(buyerSignupRequestBean.getCountry())
                                                                                         .build();
-        try{
-            if(buyerSignupRequestBean.getUserName()!=null  && buyerSignupRequestBean.getPassword()!=null){
-                if(buyerRepositoryService.existsByUsername(buyerSignupRequestBean.getUserName())){
-                    throw new UserNameAlreadyExistException("UserName Already Exist");
-                }
-                buyerEntity.setUserName(buyerSignupRequestBean.getUserName());
 
-                buyerEntity.setPassword(Base64.getEncoder()
-                        .encodeToString(objectWriter.writeValueAsBytes(buyerSignupRequestBean.getPassword())));
-            }
-        }catch (Exception e){
-            throw new UserNameAlreadyExistException("UserName Already Exist");
-        }
         return buyerSignupAssembler.toModel(buyerRepository.save(buyerEntity));
     }
 

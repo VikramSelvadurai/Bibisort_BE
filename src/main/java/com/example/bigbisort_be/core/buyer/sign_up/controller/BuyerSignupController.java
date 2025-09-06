@@ -23,7 +23,7 @@ public class BuyerSignupController {
     private final BuyerSignupService buyerSignupService; ;
 
     @PostMapping("/sign-up")
-    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws UserNameAlreadyExistException {
+    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
         return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
     }
 
