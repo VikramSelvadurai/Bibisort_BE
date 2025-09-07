@@ -52,7 +52,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/buyer/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -60,81 +60,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public SecurityFilterChain securityFilterAutoConfiguration(HttpSecurity httpSecurity) throws Exception {
-//        return httpSecurity
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .httpBasic(Customizer.withDefaults())
-////                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .build();
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth
-//                .userDetailsService(customUserDetailsService)
-//                .passwordEncoder(passwordEncoder());
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//
-//    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-//    DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//    daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//    daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-//    return new ProviderManager(daoAuthenticationProvider);
-//
-//    }
-
-
-
-//    public SecurityFilterChain securityFilterAutoConfiguration(HttpSecurity httpSecurity) throws Exception {
-//
-//    return httpSecurity
-//            .csrf(customizer -> customizer.disable())
-//            .authorizeHttpRequests(request -> request
-////                    .requestMatchers("/bigbisort-imp-exp/buyer/sign-in").authenticated()
-//                    .requestMatchers("bigbisort-imp-exp/product/**").authenticated()
-//            )
-//            .httpBasic(Customizer.withDefaults())
-//            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//            .build();
-//    }
-
-
-//@Bean
-//public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//    http.csrf(AbstractHttpConfigurer::disable)
-//            .authorizeHttpRequests(auth -> auth
-//                    .requestMatchers("/bigbisort-imp-exp/product/product_info")
-//                    .permitAll()
-//                    .anyRequest())
-////            .exceptionHandling(ex -> ex
-////                    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-////            )
-//            .sessionManagement(session -> session
-//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            )
-//            // CRITICAL: Add your JWT filter to the filter chain
-////            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-//            .httpBasic(Customizer.withDefaults())
-//            .headers(headers -> headers
-//                    .contentSecurityPolicy(csp -> csp
-//                            .policyDirectives("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; object-src 'self';"))
-//                    .cacheControl(Customizer.withDefaults())
-//                    .contentTypeOptions(Customizer.withDefaults())
-//                    .frameOptions(Customizer.withDefaults())
-//                    .httpStrictTransportSecurity(Customizer.withDefaults())
-//                    .xssProtection(Customizer.withDefaults()));
-//
-//    return http.build();
-//}
 }

@@ -35,6 +35,8 @@ import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.M
 @RequiredArgsConstructor
 @Slf4j
 public class BuyerSignupServiceImpl implements BuyerSignupService {
+
+    private static final String EMAIL_ALREADY_EXIST="exception.auth.email.already.exist";
     private final UserRepositoryServiceImpl userRepositoryServiceImpl;
     ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
     private final BuyerRepositoryService buyerRepositoryService;
@@ -48,7 +50,7 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
 
         if(StringUtils.isNotEmpty(buyerSignupRequestBean.getEmail()) && StringUtils.isNotEmpty(buyerSignupRequestBean.getPhone())){
             if(buyerRepositoryService.existsByEmailIgnoreCaseOrPhone(buyerSignupRequestBean.getEmail(),buyerSignupRequestBean.getPhone())){
-                throw new EmailorPhoneAlreadyExistException("Email or Phone number already exist, please choose another one");
+                throw new EmailorPhoneAlreadyExistException(EMAIL_ALREADY_EXIST);
             }
         }
 

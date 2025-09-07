@@ -22,10 +22,10 @@ public class BuyerSignupController {
 
     private final BuyerSignupService buyerSignupService; ;
 
-    @PostMapping("/sign-up")
-    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
-        return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
-    }
+//    @PostMapping("/sign-up")
+//    public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
+//        return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
+//    }
 
     @PostMapping("/sign-in")
     public BuyerInfoBean buyerLogin(@RequestBody @Valid BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException, ResourceNotAvailableException {

@@ -1,0 +1,28 @@
+package com.example.bigbisort_be.common.Internationalization;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
+
+import java.util.Locale;
+
+@Component
+public class Translator {
+    private ResourceBundleMessageSource messageSource;
+
+    @Autowired
+    Translator(ResourceBundleMessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
+    public String toLocale(String msgCode) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(msgCode, null, msgCode, locale);
+    }
+
+    public String toLocale(String msgCode, Object[] placeHolder) {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(msgCode, placeHolder, msgCode, locale);
+    }
+}
