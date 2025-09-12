@@ -5,12 +5,14 @@ import com.example.bigbisort_be.authentication.bean.LoginResponseBean;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
 import com.example.bigbisort_be.core.buyer.sign_up.service.BuyerSignupService;
+import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestBean;
+import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupResponseBean;
+import com.example.bigbisort_be.core.seller.sign_up.service.SellerSignupService;
 import com.example.bigbisort_be.security.core.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +26,10 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtil;
     private final BuyerSignupService buyerSignupService;
+    private final SellerSignupService sellerSignupService;
 
     @PostMapping("/login")
     public LoginResponseBean login(@RequestBody LoginRequestBean loginRequestBean) {
-
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestBean.getUsername(), loginRequestBean.getPassword()));
             List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
@@ -44,8 +46,13 @@ public class AuthController {
             return LoginResponseBean.builder().refreshToken(refreshToken).roles(roles).build();
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/buyer/sign-up")
     public BuyerSignupResponseBean buyerSignUp(@RequestBody BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
         return buyerSignupService.buyerSignUp(buyerSignupRequestBean);
+    }
+
+    @PostMapping("/seller/sign-up")
+    public SellerSignupResponseBean sellerSignUp(@RequestBody SellerSignupRequestBean sellerSignupRequestBean) throws Exception {
+        return sellerSignupService.sellerSignUp(sellerSignupRequestBean);
     }
 }

@@ -20,6 +20,7 @@ public class SellerSignupAssembler implements RepresentationModelAssembler<Selle
 
     public SellerSignupResponseBean buildModel(SellerSignupEntity sellerSignupEntity){
         return SellerSignupResponseBean.builder()
+                .sellerId(sellerSignupEntity.getId())
                 .name(sellerSignupEntity.getName())
                 .email(sellerSignupEntity.getEmail())
                 .address(sellerSignupEntity.getAddress())

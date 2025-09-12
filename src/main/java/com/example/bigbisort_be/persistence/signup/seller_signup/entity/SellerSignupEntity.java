@@ -1,5 +1,7 @@
 package com.example.bigbisort_be.persistence.signup.seller_signup.entity;
 
+import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
+import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -15,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "SELLER",indexes = @Index(columnList = "name"))
-public class SellerSignupEntity {
+public class SellerSignupEntity extends AuditEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -38,6 +40,10 @@ public class SellerSignupEntity {
     private String zip;
 
     private String country;
+
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
+    @JoinColumn(name = "buyerEntity_id", referencedColumnName = "id")
+    private UsersEntity usersEntity;
 
     @Override
     public int hashCode() {

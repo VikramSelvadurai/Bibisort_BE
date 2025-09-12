@@ -25,7 +25,7 @@ public class BuyerOrderResponseBean extends RepresentationModel<BuyerOrderRespon
     private String shippingName;
     private String estimationDateOfArrival;
     private BuyerInfoBean buyerInfoBean;
-    private Set<String> productNames;
+//    private Set<String> productNames;
     private Set<ProductResponseBean> productResponseBeanSet;
     private BuyerOrderStatusEnum orderStatus;
 }

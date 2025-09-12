@@ -1,6 +1,7 @@
 package com.example.bigbisort_be.common.exception;
 
 import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
+import com.example.bigbisort_be.exception.UserNameAlreadyExistException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailorPhoneAlreadyExistException.class)
     public ResponseEntity<Object> handleEmailOrPhoneAlreadyExist(WebRequest request,EmailorPhoneAlreadyExistException exception) {
-//        Map<String, String> response = new HashMap<>();
-//        response.put("error", ex.getMessage());
         return exceptionUtils.getException(HttpStatus.BAD_REQUEST, request, exception, exception.getMessage());
     }
     @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<Object> handleEmailOrPhoneAlreadyExist(WebRequest request,ExpiredJwtException exception) {
-//        Map<String, String> response = new HashMap<>();
-//        response.put("error", ex.getMessage());
+    public ResponseEntity<Object> handleExpiredJwtException(WebRequest request,ExpiredJwtException exception) {
         return exceptionUtils.getException(HttpStatus.FORBIDDEN,request,exception,exception.getMessage()  );
 
+    }
+
+    @ExceptionHandler(UserNameAlreadyExistException.class)
+    public ResponseEntity<Object> handleUserNameAlreadyExist(WebRequest request,UserNameAlreadyExistException exception) {
+        return exceptionUtils.getExceptionWithoutTanslation(HttpStatus.BAD_REQUEST,request,exception,exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

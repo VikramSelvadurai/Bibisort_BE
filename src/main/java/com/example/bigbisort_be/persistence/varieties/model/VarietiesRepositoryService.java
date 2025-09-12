@@ -2,13 +2,14 @@ package com.example.bigbisort_be.persistence.varieties.model;
 
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class VarietiesRepositoryService {
     private final VarietiesRepository varietiesRepository;

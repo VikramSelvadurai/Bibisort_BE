@@ -16,7 +16,7 @@ public class SellerSignupController {
     private final SellerSignupService sellerSignupService;
 
     @PostMapping("/sign-up")
-    public SellerSignupResponseBean sellerSignUp(@RequestBody SellerSignupRequestBean requestBean) {
+    public SellerSignupResponseBean sellerSignUp(@RequestBody SellerSignupRequestBean requestBean) throws Exception {
         return sellerSignupService.sellerSignUp(requestBean);
     }
 

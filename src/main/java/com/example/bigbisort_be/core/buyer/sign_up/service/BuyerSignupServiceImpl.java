@@ -1,6 +1,5 @@
 package com.example.bigbisort_be.core.buyer.sign_up.service;
 
-import com.example.bigbisort_be.common.MapBuilder.MapBuilder;
 import com.example.bigbisort_be.common.constants.CommonConstants;
 import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSigninRequestBean;
@@ -13,7 +12,7 @@ import com.example.bigbisort_be.core.buyer.sign_up.assembler.BuyerSignupAssemble
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
 import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
-import com.example.bigbisort_be.persistence.signup.user.model.UserRepositoryServiceImpl;
+import com.example.bigbisort_be.persistence.signup.user.model.UserRepositoryService;
 import com.example.bigbisort_be.security.core.utils.EncryptionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,12 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.MESSAGE;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,14 +31,12 @@ import static com.example.bigbisort_be.core.contact.service.ContactServiceImpl.M
 public class BuyerSignupServiceImpl implements BuyerSignupService {
 
     private static final String EMAIL_ALREADY_EXIST="exception.auth.email.already.exist";
-    private final UserRepositoryServiceImpl userRepositoryServiceImpl;
+    private final UserRepositoryService userRepositoryService;
     ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
     private final BuyerRepositoryService buyerRepositoryService;
     private final BuyerRepository buyerRepository;
     private final BuyerSignupAssembler buyerSignupAssembler;
     private final EncryptionUtils encryptionUtils ;
-//    @Autowired
-//    private final AuthenticationManager authenticationManager;
     @Override
     public BuyerSignupResponseBean buyerSignUp(BuyerSignupRequestBean buyerSignupRequestBean) throws Exception {
 
@@ -56,15 +48,14 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
 
         try{
             if(buyerSignupRequestBean.getUserName()!=null  && buyerSignupRequestBean.getPassword()!=null){
-                if(buyerRepositoryService.existsByUsername(buyerSignupRequestBean.getUserName())){
+               boolean userExist = userRepositoryService.existsByUserNameAndAuthenticationType(buyerSignupRequestBean.getUserName(),AuthenticationType.BUYER);
+               boolean buyerExist =  buyerRepositoryService.existsByUsername(buyerSignupRequestBean.getUserName());
+                if(userExist || buyerExist){
                     throw new UserNameAlreadyExistException("UserName Already Exist");
                 }
-//                buyerEntity.setUserName(buyerSignupRequestBean.getUserName());
-//
-//                buyerEntity.setPassword(Base64.getEncoder()
-//                        .encodeToString(objectWriter.writeValueAsBytes(buyerSignupRequestBean.getPassword())));
             }
-        }catch (Exception e){
+        }catch (Exception e) {
+            e.printStackTrace();
             throw new UserNameAlreadyExistException("UserName Already Exist");
         }
         UsersEntity usersEntity = UsersEntity.builder()
@@ -75,7 +66,7 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
                 .sPhrase(encryptionUtils.encrypt(buyerSignupRequestBean.getPassword()))
                 .build();
 
-        UsersEntity usersEntitySaved = userRepositoryServiceImpl.save(usersEntity);
+        UsersEntity usersEntitySaved = userRepositoryService.save(usersEntity);
 
         BuyerEntity buyerEntity = BuyerEntity.builder()
                         .name(buyerSignupRequestBean.getName())
@@ -87,7 +78,7 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
                                                                                 .city(buyerSignupRequestBean.getCity())
                 .usersEntity(usersEntitySaved)
                 .country(buyerSignupRequestBean.getCountry())
-                                                                                        .build();
+                .build();
 
         return buyerSignupAssembler.toModel(buyerRepository.save(buyerEntity));
     }
@@ -96,10 +87,7 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
     public BuyerInfoBean buyerLogin(BuyerSigninRequestBean buyerSigninRequestBean) throws JsonProcessingException, ResourceNotAvailableException {
 
         Map<String,Object> finalResponse = new HashMap<>();
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(buyerSigninRequestBean.getUserName(),buyerSigninRequestBean.getPassword()));
-////        if(authentication.isAuthenticated()){
-////
-////        }
+
         BuyerInfoBean buyerInfoBean = new BuyerInfoBean();
         if (StringUtils.isNotEmpty(buyerSigninRequestBean.getUserName() ) && StringUtils.isNotEmpty(buyerSigninRequestBean.getPassword() )) {
             String password = Base64.getEncoder()
@@ -109,17 +97,12 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
             }
             BuyerEntity buyerEntity = buyerRepositoryService.findByUsernameIgnoreCase(buyerSigninRequestBean.getUserName());
             buyerInfoBean = BuyerInfoBean.builder().buyerId(buyerEntity.getId()).name(buyerEntity.getName()).phone(buyerEntity.getPhone()).email(buyerEntity.getEmail()).message(CommonConstants.LOGIN_SUCCESSFULLY).userName(buyerEntity.getUserName()).build();
-            //            if(authentication.isAuthenticated()){
-//                return "Successfully logged in";
-//            }else {
-//                return "Login fails";
-//            }
         }
-//        return "Successfully logged in";
 
 
-        return buyerInfoBean;
-    }
+            return buyerInfoBean;
+        }
+
 
     @Override
     public boolean existUsername(String username) {

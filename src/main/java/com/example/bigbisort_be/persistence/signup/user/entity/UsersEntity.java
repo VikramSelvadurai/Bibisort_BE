@@ -2,6 +2,7 @@ package com.example.bigbisort_be.persistence.signup.user.entity;
 
 import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.common.enums.UserStatus;
+import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "Users",indexes = @Index(columnList = "name"))
-public class UsersEntity {
+public class UsersEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")

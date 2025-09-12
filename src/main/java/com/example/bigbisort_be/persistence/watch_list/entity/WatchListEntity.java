@@ -1,5 +1,6 @@
 package com.example.bigbisort_be.persistence.watch_list.entity;
 
+import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "WATCH_LIST",indexes = @Index(columnList = "id"))
 @FieldNameConstants
-public class WatchListEntity {
+public class WatchListEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")

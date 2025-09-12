@@ -1,22 +1,20 @@
 package com.example.bigbisort_be.security.core.jwt;
 
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 @Component
 public class JwtUtils {
 
     private static final String SECRET_KEY_GEN_KEY ="zjYeLRusmijLxsJZBysd7bHQeoR30uP9";
-    private static final long EXPIRATION_MS = 1000 * 30; // 30min
+    private static final long EXPIRATION_MS = 1000 * 60 * 30; // 30min
 
     private final SecretKey key;
 
@@ -52,6 +50,13 @@ public class JwtUtils {
                 .getExpiration();
     }
 
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(key)  // 🔹 Same key used to sign
+                .build().parseSignedClaims(token)
+                .getBody();
+    }
+
     public List<String> extractRoles(String token) {
         Object roles = Jwts.parser()
                 .verifyWith(key)
@@ -78,13 +83,15 @@ public class JwtUtils {
                 .compact();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, String userName,String stringUri) throws Exception {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userName) && !isTokenExpired(token));
     }
 
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
+
+
 
 }

@@ -7,7 +7,7 @@ import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupRespons
 import java.util.Map;
 
 public interface SellerSignupService {
-    SellerSignupResponseBean sellerSignUp(SellerSignupRequestBean requestBean);
+    SellerSignupResponseBean sellerSignUp(SellerSignupRequestBean requestBean) throws Exception;
 
     Map<String,String> sellerSignIn(SellerSignInRequestBean sellerSignInRequestBean);
 }

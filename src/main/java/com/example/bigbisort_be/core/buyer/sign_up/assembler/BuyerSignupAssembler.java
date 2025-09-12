@@ -15,6 +15,7 @@ public class BuyerSignupAssembler implements RepresentationModelAssembler<BuyerE
 
     public BuyerSignupResponseBean buildModel(BuyerEntity buyerEntity) {
     return BuyerSignupResponseBean.builder()
+        .buyerId(buyerEntity.getId())
         .name(buyerEntity.getName())
         .email(buyerEntity.getEmail())
         .address(buyerEntity.getAddress())

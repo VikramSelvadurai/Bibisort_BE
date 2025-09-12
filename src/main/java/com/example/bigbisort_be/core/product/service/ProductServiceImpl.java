@@ -3,7 +3,6 @@ package com.example.bigbisort_be.core.product.service;
 import com.example.bigbisort_be.core.product.assembler.ProductAssembler;
 import com.example.bigbisort_be.core.product.bean.request.ProductRequestBean;
 import com.example.bigbisort_be.core.product.utils.CriteriaUtils;
-import com.example.bigbisort_be.exception.IdNotFoundException;
 import com.example.bigbisort_be.exception.ProductAlreadyExistException;
 import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     public static final String PRODUCT_NAME = "productName";
+    public static final String AUTHENTICATION_TYPE = "authentication_type";
     public static final String PRODUCT_CATEGORY = "category";
     public static final String VARIETIES_ENTITY = "varietiesEntitySet";
     private static final String LIKE_OPERATOR = "%";
@@ -95,6 +95,7 @@ public class ProductServiceImpl implements ProductService {
                 productsRepository.findAll(
                         (root, query, criteriaBuilder) -> {
                             List<Predicate> predicates = new ArrayList<>();
+                            productAuthenticationTypeCriteria(productFilterRequestBean.getAuthenticationType(),root, criteriaBuilder, predicates);
                             productNameCriteria(productFilterRequestBean.getProductName(), root, criteriaBuilder, predicates);
                             productCategoryCriteria(productFilterRequestBean.getCategory(), root, criteriaBuilder, predicates);
                             varietiesCriteria(productFilterRequestBean.getVarieties(), root, criteriaBuilder, predicates);
@@ -144,6 +145,20 @@ public class ProductServiceImpl implements ProductService {
                             criteriaBuilder.like(
                                     criteriaBuilder.lower(root.get(PRODUCT_NAME)),
                                     "%" + CriteriaUtils.escapeForLike(searchText).toLowerCase(Locale.ROOT) + "%")));
+        }
+    }
+
+    private void productAuthenticationTypeCriteria(
+            String authenticationType,
+            Root<ProductEntity> root,
+            CriteriaBuilder criteriaBuilder,
+            List<Predicate> predicates) {
+        if (!Objects.toString(authenticationType, "").equals("")) {
+            CriteriaQuery<ProductEntity> cq = criteriaBuilder.createQuery(ProductEntity.class);
+
+            Predicate predicate = criteriaBuilder.equal(root.get("authenticationType"), authenticationType);
+            cq.select(root).where(predicate);
+            predicates.add(predicate);
         }
     }
     private void productCategoryCriteria(

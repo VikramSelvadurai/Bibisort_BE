@@ -46,4 +46,25 @@ public class ExceptionUtils {
         log.error(ERROR_LOG_TEMPLATE, responseEntity);
         return responseEntity;
     }
+
+    /**
+     * this method is used to handle Exception
+     */
+    public ResponseEntity getExceptionWithoutTanslation(
+            HttpStatus httpStatus, WebRequest request, Exception exception, String message) {
+        final ResponseEntity responseEntity =
+                new ResponseEntity(
+                        APIError.builder()
+                                .status(httpStatus.value())
+                                .timestamp(LocalDateTime.now().toString())
+                                .error(httpStatus.getReasonPhrase())
+                                .message(message)
+                                .path(((ServletWebRequest) request).getRequest().getRequestURI())
+                                .build(),
+                        headers,
+                        httpStatus);
+        log.error(ERROR_LOG_TEMPLATE, exception);
+        log.error(ERROR_LOG_TEMPLATE, responseEntity);
+        return responseEntity;
+    }
 }

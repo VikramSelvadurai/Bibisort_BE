@@ -3,11 +3,11 @@ package com.example.bigbisort_be.persistence.product.model;
 import com.example.bigbisort_be.exception.ProductIdNotFoundException;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ProductsRepositoryService {
     private final ProductsRepository productsRepository;

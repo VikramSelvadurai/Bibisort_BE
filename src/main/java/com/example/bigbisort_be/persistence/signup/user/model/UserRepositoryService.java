@@ -1,16 +1,33 @@
 package com.example.bigbisort_be.persistence.signup.user.model;
 
+import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
-import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.UnknownUnits;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-import java.util.UUID;
 
-@Repository
-public interface UserRepositoryService extends JpaRepository<UsersEntity, UUID> {
+@Component
+public class UserRepositoryService {
 
-    Optional<UsersEntity> findByUserName(String username);
+    private final UserRepository userRepository;
+
+    public UserRepositoryService(@Lazy UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public UsersEntity findByUsername(String username) {
+        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+    }
+
+    public boolean existsByUserName(String username) {
+        return userRepository.existsByUserName(username);
+    }
+    public boolean existsByUserNameAndAuthenticationType(String username, AuthenticationType authenticationType) {
+        return userRepository.existsByUserNameAndAuthenticationType(username,authenticationType);
+    }
+
+    public UsersEntity save(UsersEntity usersEntity) {
+       return userRepository.save(usersEntity);
+    }
 }

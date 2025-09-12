@@ -1,5 +1,6 @@
 package com.example.bigbisort_be.persistence.product.entity;
 
+import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
 import com.example.bigbisort_be.persistence.order.buyer.entity.BuyerOrderEntity;
 import com.example.bigbisort_be.persistence.varieties.entity.VarietiesEntity;
 import com.example.bigbisort_be.persistence.watch_list.entity.WatchListEntity;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "PRODUCT",indexes = @Index(columnList = "productName"))
 @FieldNameConstants
-public class ProductEntity {
+public class ProductEntity extends AuditEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

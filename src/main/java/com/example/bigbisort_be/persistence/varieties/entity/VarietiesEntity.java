@@ -1,5 +1,6 @@
 package com.example.bigbisort_be.persistence.varieties.entity;
 
+import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
 import com.example.bigbisort_be.persistence.product.entity.ProductEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "VARIETIES",indexes = @Index(columnList = "id"))
 @FieldNameConstants
-public class VarietiesEntity {
+public class VarietiesEntity extends AuditEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

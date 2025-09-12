@@ -12,4 +12,5 @@ public class ProductFilterRequestBean {
     private String productName;
     private String category;
     private String varieties;
+    private String authenticationType;
 }

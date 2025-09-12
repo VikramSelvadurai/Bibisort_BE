@@ -4,11 +4,11 @@ import com.example.bigbisort_be.persistence.watch_list.entity.WatchListEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class WatchListRepositoryService {
     private final WatchListRepository watchListRepository;
