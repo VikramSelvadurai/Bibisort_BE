@@ -1,6 +1,7 @@
-package com.example.bigbisort_be.persistence.signup.seller_signup.entity;
+package com.example.bigbisort_be.persistence.admin.entity;
 
 import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
+import com.example.bigbisort_be.persistence.contact.model.entity.ContactEntity;
 import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,8 +17,8 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "SELLER",indexes = @Index(columnList = "name"))
-public class SellerSignupEntity extends AuditEntity {
+@Table(name = "admin",indexes ={@Index(columnList = "id,name")})
+public class AdminEntity extends AuditEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -25,24 +26,17 @@ public class SellerSignupEntity extends AuditEntity {
     @JdbcTypeCode(SqlTypes.UUID)
     private UUID id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "email",nullable = false)
     private String email;
 
-    private String phone;
-
-    private String address;
-
-    private String state;
-
-    private String city;
-
-    private String zip;
-
-    private String country;
-
     @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
-    @JoinColumn(name = "buyerEntity_id", referencedColumnName = "id")
+    @JoinColumn(name = "userEntity_id", referencedColumnName = "id")
     private UsersEntity usersEntity;
 
     @Override
@@ -55,7 +49,7 @@ public class SellerSignupEntity extends AuditEntity {
         if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        SellerSignupEntity sellerSignupEntity = (SellerSignupEntity) o;
-        return sellerSignupEntity.id.equals(this.id);
+        AdminEntity adminEntity = (AdminEntity) o;
+        return adminEntity.id.equals(this.id);
     }
 }

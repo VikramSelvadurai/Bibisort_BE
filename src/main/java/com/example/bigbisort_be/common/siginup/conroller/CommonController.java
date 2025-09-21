@@ -20,7 +20,7 @@ public class CommonController {
         return  Arrays.stream(AuthenticationType.values()).sorted(Comparator.reverseOrder())
                 .collect(Collectors.toMap(
                         authenticationType -> authenticationType,
-                        AuthenticationType::getSignTypValue,
+                        AuthenticationType::getAuthenticationTypeValue,
                         (existing, replacement) -> existing,
                         LinkedHashMap::new));
     }

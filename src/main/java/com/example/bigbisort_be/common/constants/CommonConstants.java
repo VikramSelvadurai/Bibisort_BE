@@ -8,6 +8,8 @@ public class CommonConstants {
     public final static String LOGIN_SUCCESSFULLY = "Successfully Logged in ";
     public final static String STATUS_UPDATED = "Status updated successfully";
     public final static String WATCH_LIST_ADDED = "Watch list added Successfully";
+    public final static String USERNAME_ALREADY_EXIST ="exception.auth.userName.already.exist";
+    public final static String USERNAME_NOT_FOUND ="exception.auth.userName.not.found";
 
     public static final String MESSAGE = "message";
     public static final String SUCCESS = "Success";

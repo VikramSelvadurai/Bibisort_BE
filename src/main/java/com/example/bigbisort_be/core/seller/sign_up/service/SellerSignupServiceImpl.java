@@ -8,7 +8,7 @@ import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignInRequestB
 import com.example.bigbisort_be.exception.EmailorPhoneAlreadyExistException;
 import com.example.bigbisort_be.exception.InvalidCredentialsException;
 import com.example.bigbisort_be.exception.UserNameAlreadyExistException;
-import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerSignupEntity;
+import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerEntity;
 import com.example.bigbisort_be.persistence.signup.seller_signup.model.SellerSignupRepositoryService;
 import com.example.bigbisort_be.core.seller.sign_up.assembler.SellerSignupAssembler;
 import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestBean;
@@ -63,8 +63,8 @@ public class SellerSignupServiceImpl implements SellerSignupService {
 
         UsersEntity usersEntitySaved = userRepositoryService.save(usersEntity);
 
-    SellerSignupEntity sellerSignupEntity =
-        SellerSignupEntity.builder()
+    SellerEntity sellerEntity =
+        SellerEntity.builder()
             .name(sellerSignupRequestBean.getName())
             .email(sellerSignupRequestBean.getEmail())
             .phone(sellerSignupRequestBean.getPhone())
@@ -75,7 +75,7 @@ public class SellerSignupServiceImpl implements SellerSignupService {
             .address(sellerSignupRequestBean.getCity())
             .usersEntity(usersEntitySaved)
             .build();
-        return sellerSignupAssembler.toModel(sellerSignupRepositoryService.save(sellerSignupEntity));
+        return sellerSignupAssembler.toModel(sellerSignupRepositoryService.save(sellerEntity));
     }
 
     @Override

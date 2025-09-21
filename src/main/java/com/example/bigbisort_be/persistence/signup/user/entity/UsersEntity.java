@@ -2,8 +2,10 @@ package com.example.bigbisort_be.persistence.signup.user.entity;
 
 import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.common.enums.UserStatus;
+import com.example.bigbisort_be.persistence.admin.entity.AdminEntity;
 import com.example.bigbisort_be.persistence.audit.model.entity.AuditEntity;
 import com.example.bigbisort_be.persistence.signup.buyer_signup.entity.BuyerEntity;
+import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -69,6 +71,12 @@ public class UsersEntity extends AuditEntity {
 
     @OneToOne(mappedBy = "usersEntity", orphanRemoval = true)
     private BuyerEntity buyerEntity;
+
+    @OneToOne(mappedBy = "usersEntity", orphanRemoval = true)
+    private SellerEntity sellerEntity;
+
+    @OneToOne(mappedBy = "usersEntity", orphanRemoval = true)
+    private AdminEntity adminEntity;
 //    /**
 //     * Status of user consent agreement
 //     */

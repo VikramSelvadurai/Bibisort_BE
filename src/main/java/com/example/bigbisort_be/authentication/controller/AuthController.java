@@ -2,6 +2,9 @@ package com.example.bigbisort_be.authentication.controller;
 
 import com.example.bigbisort_be.authentication.bean.LoginRequestBean;
 import com.example.bigbisort_be.authentication.bean.LoginResponseBean;
+import com.example.bigbisort_be.core.admin.sign_up.request.AdminSignupRequestBean;
+import com.example.bigbisort_be.core.admin.sign_up.response.AdminSignupResponseBean;
+import com.example.bigbisort_be.core.admin.sign_up.service.AdminService;
 import com.example.bigbisort_be.core.buyer.sign_up.request.BuyerSignupRequestBean;
 import com.example.bigbisort_be.core.buyer.sign_up.response.BuyerSignupResponseBean;
 import com.example.bigbisort_be.core.buyer.sign_up.service.BuyerSignupService;
@@ -27,11 +30,12 @@ public class AuthController {
     private final JwtUtils jwtUtil;
     private final BuyerSignupService buyerSignupService;
     private final SellerSignupService sellerSignupService;
+    private final AdminService adminService;
 
     @PostMapping("/login")
     public LoginResponseBean login(@RequestBody LoginRequestBean loginRequestBean) {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequestBean.getUsername(), loginRequestBean.getPassword()));
+                    new UsernamePasswordAuthenticationToken(loginRequestBean.getUsername()+":"+loginRequestBean.getAuthenticationType(), loginRequestBean.getPassword()));
             List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
             return LoginResponseBean.builder()
                     .roles(roles)
@@ -54,5 +58,10 @@ public class AuthController {
     @PostMapping("/seller/sign-up")
     public SellerSignupResponseBean sellerSignUp(@RequestBody SellerSignupRequestBean sellerSignupRequestBean) throws Exception {
         return sellerSignupService.sellerSignUp(sellerSignupRequestBean);
+    }
+
+    @PostMapping("/admin/sign-up")
+    public AdminSignupResponseBean sellerSignUp(@RequestBody AdminSignupRequestBean adminSignupRequestBean) throws Exception {
+        return adminService.adminSignUp(adminSignupRequestBean);
     }
 }

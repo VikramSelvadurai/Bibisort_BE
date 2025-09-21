@@ -54,7 +54,7 @@ public class BuyerSignupServiceImpl implements BuyerSignupService {
                     throw new UserNameAlreadyExistException("UserName Already Exist");
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new UserNameAlreadyExistException("UserName Already Exist");
         }

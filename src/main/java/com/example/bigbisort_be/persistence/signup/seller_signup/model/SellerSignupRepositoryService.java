@@ -1,6 +1,6 @@
 package com.example.bigbisort_be.persistence.signup.seller_signup.model;
 
-import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerSignupEntity;
+import com.example.bigbisort_be.persistence.signup.seller_signup.entity.SellerEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class SellerSignupRepositoryService {
         return sellerSignupRepository.existsByPhone(phone);
     }
 
-    public SellerSignupEntity save(SellerSignupEntity sellerSignupEntity) {
-        return sellerSignupRepository.save(sellerSignupEntity);
+    public SellerEntity save(SellerEntity sellerEntity) {
+        return sellerSignupRepository.save(sellerEntity);
     }
 }

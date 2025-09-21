@@ -10,8 +10,8 @@ bigbisort:
     host: localhost
     name: bigbisort
     url: jdbc:postgresql://localhost:5432/bigbisort?createDatabaseIfNotExist=true&serverTimezone=UTC
-    userName: postgres
-    password: postgres
+    userName: localhost
+    password: admin123
     hikari:
       connection_timeout: 20000
       connection_pool_size: 20

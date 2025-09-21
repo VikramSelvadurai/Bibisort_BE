@@ -1,5 +1,6 @@
 package com.example.bigbisort_be.security.core.authentication;
 
+import com.example.bigbisort_be.common.enums.AuthenticationType;
 import com.example.bigbisort_be.persistence.signup.user.entity.UsersEntity;
 import com.example.bigbisort_be.persistence.signup.user.model.UserRepositoryService;
 import com.example.bigbisort_be.security.core.utils.EncryptionUtils;
@@ -31,7 +32,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UsersEntity usersEntity = userRepositoryService.findByUsername(username);
+
+        String userName = username.substring(0,username.indexOf(":"));
+        log.error("username:{}", userName);
+        String authType = username.substring(username.indexOf(":")+1);
+        log.info("authType:{}", authType);
+
+        UsersEntity usersEntity = userRepositoryService.findByUserNameAndAuthenticationType(userName, AuthenticationType.getEnum(authType));
         String decryptedPassword = null;
             try {
                 decryptedPassword = encryptionUtils.decrypt(usersEntity.getSPhrase());
@@ -43,7 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return User.builder()
                     .username(Objects.nonNull(usersEntity)?usersEntity.getName():null)
                     .password(passwordEncoder.encode(decryptedPassword)) // must be encoded
-                    .roles(usersEntity.getAuthenticationType().getSignTypValue()) // Spring adds ROLE_ automatically
+                    .roles(usersEntity.getAuthenticationType().name()) // Spring adds ROLE_ automatically
                     .build();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.bigbisort_be.common.enums;
 
+import com.example.bigbisort_be.exception.EnumNotFound;
+
 public enum AuthenticationType {
 
     BUYER("Buyer"),
@@ -12,15 +14,16 @@ public enum AuthenticationType {
         this.type = type;
     }
 
-    public String getSignTypValue() {
+    public String getAuthenticationTypeValue() {
         return type;
     }
-    public static String getValueByKey(String key) {
-        for (AuthenticationType authenticationType : values()) {
-            if (authenticationType.name().equalsIgnoreCase(key)) {
-                return authenticationType.getSignTypValue();
+
+    public static AuthenticationType getEnum(String value) {
+        for (AuthenticationType e : values()) {
+            if (e.type.equalsIgnoreCase(value) || e.name().equalsIgnoreCase(value)) {
+                return e;
             }
         }
-        return key;
+        throw new EnumNotFound(value);
     }
 }

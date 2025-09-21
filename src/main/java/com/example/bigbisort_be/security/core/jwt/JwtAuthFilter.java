@@ -52,9 +52,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 String token = authHeader.substring(7);
                 String username = jwtUtil.extractUsername(token);
-                Claims claims = jwtUtil.extractAllClaims(token);
-                List<String> roles = claims.get("Roles", List.class);
-                userDetailsService.loadUserByUsername(username);
+//                Claims claims = jwtUtil.extractAllClaims(token);
+//                List<String> roles = claims.get("Roles", List.class);
+//                userDetailsService.loadUserByUsername(username);
 
                 log.error("Username is {}", username);
                 UsersEntity usersEntity = userRepositoryService.findByUsername(username);
@@ -96,10 +96,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType("application/json");
                 response.getWriter().write("{\"error\": \"Invalid token\"}");
+//                throw new ServletException(ex);
                 return;
             }
-
-
         }
         chain.doFilter(request, response);
     }
