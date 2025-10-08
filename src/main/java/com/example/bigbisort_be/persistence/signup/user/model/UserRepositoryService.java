@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import static com.example.bigbisort_be.common.constants.CommonConstants.PHONE_NUMBER_NOT_FOUND;
 import static com.example.bigbisort_be.common.constants.CommonConstants.USERNAME_NOT_FOUND;
 
 
@@ -22,11 +24,15 @@ public class UserRepositoryService {
     }
 
     public UsersEntity findByUsername(String username) {
-        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException(translator.toLocale(USERNAME_NOT_FOUND)));
+        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException(translator.toLocale(USERNAME_NOT_FOUND,new String[]{username})));
+    }
+
+    public UsersEntity findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new UsernameNotFoundException(translator.toLocale(PHONE_NUMBER_NOT_FOUND,new String[]{phoneNumber})));
     }
 
     public UsersEntity findByUserNameAndAuthenticationType(String username, AuthenticationType authenticationType) {
-        return userRepository.findByUserNameAndAuthenticationType(username,authenticationType).orElseThrow(() -> new UsernameNotFoundException(translator.toLocale(USERNAME_NOT_FOUND)));
+        return userRepository.findByUserNameAndAuthenticationType(username,authenticationType).orElseThrow(() -> new UsernameNotFoundException(translator.toLocale(USERNAME_NOT_FOUND,new String[]{username})));
     }
 
     public boolean existsByUserName(String username) {

@@ -35,6 +35,9 @@ public class UsersEntity extends AuditEntity {
     private String name;
     @Column(name = "user_name")
     private String userName;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
     private String firstName;
     private String lastName;
     private String email;

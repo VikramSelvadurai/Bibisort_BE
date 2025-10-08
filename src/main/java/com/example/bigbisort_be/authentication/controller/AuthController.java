@@ -12,7 +12,12 @@ import com.example.bigbisort_be.core.seller.sign_up.request.SellerSignupRequestB
 import com.example.bigbisort_be.core.seller.sign_up.response.SellerSignupResponseBean;
 import com.example.bigbisort_be.core.seller.sign_up.service.SellerSignupService;
 import com.example.bigbisort_be.security.core.jwt.JwtUtils;
+import com.example.bigbisort_be.security.core.twilio.bean.request.TwilioRequestBean;
+import com.example.bigbisort_be.security.core.twilio.bean.request.TwilioVerifyOtpRequestBean;
+import com.example.bigbisort_be.security.core.twilio.service.TwilioVerifyService;
+import com.twilio.rest.verify.v2.service.VerificationCheck;
 import lombok.RequiredArgsConstructor;
+import com.twilio.rest.verify.v2.service.Verification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +25,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,6 +37,8 @@ public class AuthController {
     private final BuyerSignupService buyerSignupService;
     private final SellerSignupService sellerSignupService;
     private final AdminService adminService;
+    private final TwilioVerifyService twilioVerifyService;
+
 
     @PostMapping("/login")
     public LoginResponseBean login(@RequestBody LoginRequestBean loginRequestBean) {
@@ -64,4 +72,32 @@ public class AuthController {
     public AdminSignupResponseBean sellerSignUp(@RequestBody AdminSignupRequestBean adminSignupRequestBean) throws Exception {
         return adminService.adminSignUp(adminSignupRequestBean);
     }
+
+    @PostMapping("/send-otp")
+    public Map<String,String> sendOtp( @RequestBody TwilioRequestBean req) {
+        try {
+            Verification v = twilioVerifyService.sendVerification(req.getPhoneNumber(), req.getChannel());
+            return Map.of("message","Otp sent successfully");
+        } catch (Exception ex) {
+            return Map.of("error",ex.getMessage());
+        }
+    }
+
+    @PostMapping("/validate-otp")
+    public Map<String,String> checkOtp(@RequestBody TwilioVerifyOtpRequestBean req) {
+        try {
+            VerificationCheck check = twilioVerifyService.checkVerification(req.getPhoneNumber(), req.getCode());
+            boolean approved = "approved".equalsIgnoreCase(check.getStatus());
+            List<Map<String, Object>> failed= check.getSnaAttemptsErrorCodes();
+            if (approved) {
+                return Map.of("message","Otp verified successfully");
+            }
+            else{
+                return Map.of("error","invalid otp or expired");
+            }
+        } catch (Exception ex) {
+            return Map.of("error",ex.getMessage());
+        }
+    }
+
 }
