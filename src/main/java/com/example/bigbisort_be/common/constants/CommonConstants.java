@@ -11,6 +11,7 @@ public class CommonConstants {
     public final static String USERNAME_ALREADY_EXIST ="exception.auth.userName.already.exist";
     public final static String USERNAME_NOT_FOUND ="exception.auth.userName.not.found";
     public final static String PHONE_NUMBER_NOT_FOUND ="exception.auth.phone_number.not.found";
+    public final static String INVALID_OTP ="exception.auth.invalid.otp";
 
     public static final String MESSAGE = "message";
     public static final String SUCCESS = "Success";

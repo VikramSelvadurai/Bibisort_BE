@@ -13,4 +13,5 @@ public class TwilioVerifyOtpRequestBean {
 
     private String phoneNumber;
     private String code;
+    private String userName;
 }
