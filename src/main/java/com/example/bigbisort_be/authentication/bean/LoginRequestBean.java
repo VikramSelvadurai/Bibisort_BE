@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class LoginRequestBean {
+    /**
+     * login user name
+     */
     private String username;
     private String password;
     private AuthenticationType authenticationType;
