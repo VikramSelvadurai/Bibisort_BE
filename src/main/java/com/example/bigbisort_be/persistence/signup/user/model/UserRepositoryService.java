@@ -42,6 +42,10 @@ public class UserRepositoryService {
         return userRepository.existsByUserNameAndAuthenticationType(username,authenticationType);
     }
 
+    public boolean existsByUserNameAndAuthenticationTypeAndSPhrase(String username, AuthenticationType authenticationType,String phrase) {
+        return userRepository.existsByUserNameAndAuthenticationTypeAndOldSPhrase(username,authenticationType,phrase);
+    }
+
     public UsersEntity save(UsersEntity usersEntity) {
        return userRepository.save(usersEntity);
     }

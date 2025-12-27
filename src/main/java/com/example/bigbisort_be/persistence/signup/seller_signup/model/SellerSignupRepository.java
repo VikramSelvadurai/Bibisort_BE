@@ -12,4 +12,6 @@ public interface SellerSignupRepository extends JpaRepository<SellerEntity,UUID>
 
     boolean existsByPhone(String phone);
 
+    boolean existsByNameAndPhone(String username, String phone);
+
 }

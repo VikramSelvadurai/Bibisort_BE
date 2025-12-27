@@ -113,7 +113,7 @@ public class VarietiesServiceImpl implements VarietiesService {
                 PageRequest.of(
                         pageable.getPageNumber(),
                         pageable.getPageSize(),
-                        Sort.by(Sort.Direction.DESC, VARIETIES_NAME));
+                        Sort.by(Sort.Direction.DESC, VarietiesEntity.Fields.varietyName));
         Page<VarietiesEntity> productsEntityPage =
                 varietiesRepository.findAll(
                         (root, query, criteriaBuilder) -> {
@@ -138,7 +138,7 @@ public class VarietiesServiceImpl implements VarietiesService {
             predicates.add(
                     criteriaBuilder.and(
                             criteriaBuilder.like(
-                                    criteriaBuilder.lower(root.get(VARIETIES_NAME)),
+                                    criteriaBuilder.lower(root.get(VarietiesEntity.Fields.varietyName)),
                                     "%" + CriteriaUtils.escapeForLike(searchText).toLowerCase(Locale.ROOT) + "%")));
         }
     }
